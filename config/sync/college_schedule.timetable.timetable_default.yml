@@ -1,0 +1,61 @@
+uuid: 65449067-891d-4046-a4f8-32fdc027c27c
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: S8RrA3aRYIcZjK0fd6yuSbfKKk4H7Way8sf-5C-akK4
+id: timetable_default
+label: Default
+time: null
+timing:
+  1:
+    start: '8:00'
+    end: '8:45'
+  2:
+    start: '8:55'
+    end: '9:40'
+  3:
+    start: '9:50'
+    end: '10:35'
+  4:
+    start: '10:45'
+    end: '11:30'
+  5:
+    start: '11:40'
+    end: '12:25'
+  6:
+    start: '12:35'
+    end: '13:20'
+  7:
+    start: '13:30'
+    end: '14:15'
+  8:
+    start: '14:25'
+    end: '15:10'
+  9:
+    start: '15:20'
+    end: '16:05'
+  10:
+    start: '16:15'
+    end: '17:00'
+  11:
+    start: '17:10'
+    end: '17:55'
+  12:
+    start: '18:05'
+    end: '18:50'
+  13:
+    start: '19:00'
+    end: '19:45'
+  14:
+    start: '19:55'
+    end: '20:40'
+  15:
+    start: '20:50'
+    end: '21:35'
+  16:
+    start: ''
+    end: ''
+  17:
+    start: '20:50'
+    end: '21:35'

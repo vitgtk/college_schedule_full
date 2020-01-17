@@ -1,0 +1,14 @@
+.schedule-area-days {
+  display: flex;
+  flex-wrap: wrap;
+}
+.schedule-area-days--saturday-on {
+
+}
+
+.schedule-day-item {
+  min-height: 50px;
+  width: 17%;
+  background: #cccccc;
+  margin: 0 auto;
+}

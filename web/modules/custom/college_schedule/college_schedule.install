@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the College schedule module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function college_schedule_install() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function college_schedule_uninstall() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function college_schedule_requirements($phase) {
+  $requirements = [];
+
+  if ($phase == 'runtime') {
+    $value = mt_rand(0, 100);
+    $requirements['college_schedule_status'] = [
+      'title' => t('College schedule status'),
+      'value' => t('College schedule value: @value', ['@value' => $value]),
+      'severity' => $value > 50 ? REQUIREMENT_INFO : REQUIREMENT_WARNING,
+    ];
+  }
+
+  return $requirements;
+}

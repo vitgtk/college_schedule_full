@@ -1,0 +1,8 @@
+uuid: 1efa126d-df26-48f5-a7b5-0744c7a96fbf
+langcode: en
+status: true
+dependencies: {  }
+id: college_schedule_ui
+label: college_schedule_ui
+locked: false
+pattern: 'W: d F y'

@@ -1,0 +1,7 @@
+name: 'College schedule UI'
+type: module
+description: 'College schedule UI'
+core: 8.x
+package: 'College schedule'
+dependencies:
+  - college_schedule:college_schedule

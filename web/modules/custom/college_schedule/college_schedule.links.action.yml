@@ -1,0 +1,40 @@
+entity.timetable.add_form:
+  route_name: entity.timetable.add_form
+  title: 'Add Timetable'
+  appears_on:
+    - entity.timetable.collection
+entity.teacher.add_form:
+  route_name: entity.teacher.add_form
+  title: 'Add Teacher'
+  appears_on:
+    - entity.teacher.collection
+entity.discipline.add_form:
+  route_name: entity.discipline.add_form
+  title: 'Add Discipline'
+  appears_on:
+    - entity.discipline.collection
+entity.schedule_event.add_form:
+  route_name: entity.schedule_event.add_page
+  title: 'Add Event'
+  appears_on:
+    - entity.schedule_event.collection
+entity.schedule_event_type.add_form:
+  route_name: entity.schedule_event_type.add_form
+  title: 'Add Event type'
+  appears_on:
+    - entity.schedule_event_type.collection
+entity.event_location.add_form:
+  route_name: entity.event_location.add_form
+  title: 'Add Location'
+  appears_on:
+    - entity.event_location.collection
+entity.group_program.add_form:
+  route_name: entity.group_program.add_form
+  title: 'Add Group program'
+  appears_on:
+    - entity.group_program.collection
+entity.student_group.add_form:
+  route_name: entity.student_group.add_form
+  title: 'Add Student group'
+  appears_on:
+    - entity.student_group.collection

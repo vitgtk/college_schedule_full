@@ -1,0 +1,7 @@
+college_schedule_ui.college_schedule_dashboard:
+  path: '/college-schedule/dashboard'
+  defaults:
+    _form: '\Drupal\college_schedule_ui\Form\DashboardForm'
+    _title: 'Dashboard Form'
+  requirements:
+    _access: 'TRUE'

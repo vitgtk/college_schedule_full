@@ -1,0 +1,122 @@
+# Teacher routing definition
+teacher.settings_tab:
+  route_name: teacher.settings
+  title: 'Settings'
+  base_route: teacher.settings
+
+entity.teacher.canonical:
+  route_name: entity.teacher.canonical
+  base_route: entity.teacher.canonical
+  title: 'View'
+
+entity.teacher.edit_form:
+  route_name: entity.teacher.edit_form
+  base_route: entity.teacher.canonical
+  title: 'Edit'
+
+entity.teacher.delete_form:
+  route_name:  entity.teacher.delete_form
+  base_route:  entity.teacher.canonical
+  title: Delete
+  weight: 10
+# Discipline routing definition
+discipline.settings_tab:
+  route_name: discipline.settings
+  title: 'Settings'
+  base_route: discipline.settings
+
+entity.discipline.canonical:
+  route_name: entity.discipline.canonical
+  base_route: entity.discipline.canonical
+  title: 'View'
+
+entity.discipline.edit_form:
+  route_name: entity.discipline.edit_form
+  base_route: entity.discipline.canonical
+  title: 'Edit'
+
+entity.discipline.delete_form:
+  route_name:  entity.discipline.delete_form
+  base_route:  entity.discipline.canonical
+  title: Delete
+  weight: 10
+# Event routing definition
+
+entity.schedule_event.canonical:
+  route_name: entity.schedule_event.canonical
+  base_route: entity.schedule_event.canonical
+  title: 'View'
+
+entity.schedule_event.edit_form:
+  route_name: entity.schedule_event.edit_form
+  base_route: entity.schedule_event.canonical
+  title: 'Edit'
+
+entity.schedule_event.delete_form:
+  route_name:  entity.schedule_event.delete_form
+  base_route:  entity.schedule_event.canonical
+  title: Delete
+  weight: 10
+# Location routing definition
+event_location.settings_tab:
+  route_name: event_location.settings
+  title: 'Settings'
+  base_route: event_location.settings
+
+entity.event_location.canonical:
+  route_name: entity.event_location.canonical
+  base_route: entity.event_location.canonical
+  title: 'View'
+
+entity.event_location.edit_form:
+  route_name: entity.event_location.edit_form
+  base_route: entity.event_location.canonical
+  title: 'Edit'
+
+entity.event_location.delete_form:
+  route_name:  entity.event_location.delete_form
+  base_route:  entity.event_location.canonical
+  title: Delete
+  weight: 10
+# Group program routing definition
+group_program.settings_tab:
+  route_name: group_program.settings
+  title: 'Settings'
+  base_route: group_program.settings
+
+entity.group_program.canonical:
+  route_name: entity.group_program.canonical
+  base_route: entity.group_program.canonical
+  title: 'View'
+
+entity.group_program.edit_form:
+  route_name: entity.group_program.edit_form
+  base_route: entity.group_program.canonical
+  title: 'Edit'
+
+entity.group_program.delete_form:
+  route_name:  entity.group_program.delete_form
+  base_route:  entity.group_program.canonical
+  title: Delete
+  weight: 10
+# Student group routing definition
+student_group.settings_tab:
+  route_name: student_group.settings
+  title: 'Settings'
+  base_route: student_group.settings
+
+entity.student_group.canonical:
+  route_name: entity.student_group.canonical
+  base_route: entity.student_group.canonical
+  title: 'View'
+
+entity.student_group.edit_form:
+  route_name: entity.student_group.edit_form
+  base_route: entity.student_group.canonical
+  title: 'Edit'
+
+entity.student_group.delete_form:
+  route_name:  entity.student_group.delete_form
+  base_route:  entity.student_group.canonical
+  title: Delete
+  weight: 10

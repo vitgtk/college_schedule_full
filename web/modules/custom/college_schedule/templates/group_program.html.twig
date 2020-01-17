@@ -1,0 +1,22 @@
+{#
+/**
+ * @file group_program.html.twig
+ * Default theme implementation to present Group program data.
+ *
+ * This template is used when viewing Group program pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_group_program()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes.addClass('group_program') }}>
+  {% if content %}
+    {{- content -}}
+  {% endif %}
+</div>

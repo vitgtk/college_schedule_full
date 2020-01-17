@@ -1,0 +1,30 @@
+college_schedule_timing:
+  type: mapping
+  mapping:
+    start:
+      type: string
+      label: 'Start time'
+    end:
+      type: string
+      label: 'End time'
+
+college_schedule.timetable.*:
+  type: config_entity
+  label: 'Timetable config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    time:
+      type: string
+      label: 'Time'
+    timing:
+      type: sequence
+      label: 'Timing'
+      sequence:
+        type: college_schedule_timing
+    uuid:
+      type: string

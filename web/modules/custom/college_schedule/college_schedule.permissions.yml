@@ -1,0 +1,120 @@
+add teacher entities:
+  title: 'Create new Teacher entities'
+
+administer teacher entities:
+  title: 'Administer Teacher entities'
+  description: 'Allow to access the administration form to configure Teacher entities.'
+  restrict access: true
+
+delete teacher entities:
+  title: 'Delete Teacher entities'
+
+edit teacher entities:
+  title: 'Edit Teacher entities'
+
+view published teacher entities:
+  title: 'View published Teacher entities'
+
+view unpublished teacher entities:
+  title: 'View unpublished Teacher entities'
+
+add discipline entities:
+  title: 'Create new Discipline entities'
+
+administer discipline entities:
+  title: 'Administer Discipline entities'
+  description: 'Allow to access the administration form to configure Discipline entities.'
+  restrict access: true
+
+delete discipline entities:
+  title: 'Delete Discipline entities'
+
+edit discipline entities:
+  title: 'Edit Discipline entities'
+
+view published discipline entities:
+  title: 'View published Discipline entities'
+
+view unpublished discipline entities:
+  title: 'View unpublished Discipline entities'
+
+add event entities:
+  title: 'Create new Event entities'
+
+administer event entities:
+  title: 'Administer Event entities'
+  description: 'Allow to access the administration form to configure Event entities.'
+  restrict access: true
+
+delete event entities:
+  title: 'Delete Event entities'
+
+edit event entities:
+  title: 'Edit Event entities'
+
+view published event entities:
+  title: 'View published Event entities'
+
+view unpublished event entities:
+  title: 'View unpublished Event entities'
+
+add location entities:
+  title: 'Create new Location entities'
+
+administer location entities:
+  title: 'Administer Location entities'
+  description: 'Allow to access the administration form to configure Location entities.'
+  restrict access: true
+
+delete location entities:
+  title: 'Delete Location entities'
+
+edit location entities:
+  title: 'Edit Location entities'
+
+view published location entities:
+  title: 'View published Location entities'
+
+view unpublished location entities:
+  title: 'View unpublished Location entities'
+
+add group program entities:
+  title: 'Create new Group program entities'
+
+administer group program entities:
+  title: 'Administer Group program entities'
+  description: 'Allow to access the administration form to configure Group program entities.'
+  restrict access: true
+
+delete group program entities:
+  title: 'Delete Group program entities'
+
+edit group program entities:
+  title: 'Edit Group program entities'
+
+view published group program entities:
+  title: 'View published Group program entities'
+
+view unpublished group program entities:
+  title: 'View unpublished Group program entities'
+
+add student group entities:
+  title: 'Create new Student group entities'
+
+administer student group entities:
+  title: 'Administer Student group entities'
+  description: 'Allow to access the administration form to configure Student group entities.'
+  restrict access: true
+
+delete student group entities:
+  title: 'Delete Student group entities'
+
+edit student group entities:
+  title: 'Edit Student group entities'
+
+view published student group entities:
+  title: 'View published Student group entities'
+
+view unpublished student group entities:
+  title: 'View unpublished Student group entities'
+

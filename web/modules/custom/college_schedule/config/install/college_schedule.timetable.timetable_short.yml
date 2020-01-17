@@ -1,0 +1,57 @@
+langcode: en
+status: true
+dependencies: {  }
+id: timetable_short
+label: 'Short'
+timing:
+  1:
+    start: '8:00'
+    end: '8:30'
+  2:
+    start: '8:35'
+    end: '9:05'
+  3:
+    start: '9:10'
+    end: '9:40'
+  4:
+    start: '9:45'
+    end: '10:15'
+  5:
+    start: '10:20'
+    end: '10:50'
+  6:
+    start: '10:55'
+    end: '11:25'
+  7:
+    start: '11:30'
+    end: '12:00'
+  8:
+    start: '12:05'
+    end: '12:35'
+  9:
+    start: '12:40'
+    end: '13:10'
+  10:
+    start: '13:15'
+    end: '13:45'
+  11:
+    start: '13:50'
+    end: '14:20'
+  12:
+    start: '14:25'
+    end: '14:55'
+  13:
+    start: '15:00'
+    end: '15:30'
+  14:
+    start: '15:35'
+    end: '16:05'
+  15:
+    start: '16:10'
+    end: '16:40'
+  16:
+    start: ''
+    end: ''
+  17:
+    start: ''
+    end: ''

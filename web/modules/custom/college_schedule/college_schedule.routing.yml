@@ -1,0 +1,7 @@
+college_schedule.config:
+  path: '/admin/config/college-schedule'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'College schedule'
+  requirements:
+    _permission: 'access administration pages'

@@ -22,3 +22,37 @@ function college_schedule_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function college_schedule_theme() {
+  $theme = [];
+  $theme['schedule_event'] = [
+    'render element' => 'elements',
+    'file' => 'schedule_event.page.inc',
+    'template' => 'schedule_event',
+  ];
+  $theme['schedule_event_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'schedule_event.page.inc',
+  ];
+  return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function college_schedule_theme_suggestions_schedule_event(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#schedule_event'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'schedule_event__' . $sanitized_view_mode;
+  $suggestions[] = 'schedule_event__' . $entity->bundle();
+  $suggestions[] = 'schedule_event__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'schedule_event__' . $entity->id();
+  $suggestions[] = 'schedule_event__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}
