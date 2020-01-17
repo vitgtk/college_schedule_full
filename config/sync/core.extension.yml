@@ -21,6 +21,7 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  fixerio: 0
   jsonapi: 0
   language: 0
   layout_discovery: 0
@@ -49,3 +50,4 @@ theme:
 profile: minimal
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
+langcode: ru

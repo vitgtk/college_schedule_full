@@ -1,0 +1,8 @@
+plan: free
+api_access_key: rrrr
+available_currencies:
+  eur: eur
+  awg: awg
+  azn: azn
+  bbd: bbd
+  bdt: bdt
