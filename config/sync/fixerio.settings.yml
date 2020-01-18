@@ -5,5 +5,12 @@ available_currencies:
   azn: azn
   bbd: bbd
   bdt: bdt
+  bsd: bsd
   byn: byn
+  cad: cad
+  crc: crc
   eur: eur
+  rub: rub
+  usd: usd
+base: eur
+refresh: 3600
