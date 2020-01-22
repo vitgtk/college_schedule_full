@@ -5,3 +5,18 @@ college_schedule_ui.college_schedule_dashboard:
     _title: 'Dashboard Form'
   requirements:
     _access: 'TRUE'
+college_schedule_ui.events_form:
+  path: '/college_schedule_ui/form/events/{group}/{week}'
+  defaults:
+    _form: '\Drupal\college_schedule_ui\Form\EventsForm'
+    _title: 'EventsForm'
+  requirements:
+    _access: 'TRUE'
+
+college_schedule_ui.dashboard_controller_hello:
+  path: '/college_schedule_ui/hello/{name}'
+  defaults:
+    _controller: '\Drupal\college_schedule_ui\Controller\DashboardController::hello'
+    _title: 'demo'
+  requirements:
+    _permission: 'access content'

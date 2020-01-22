@@ -86,7 +86,7 @@ class ScheduleDay extends RenderElement {
   public static function preRenderScheduleDay(array $element) {
 
     if (!isset($element['#id'])) {
-      $element['#id'] = Html::getUniqueId(implode('-', $element['#parents']) . '-wrapper');
+      // $element['#id'] = Html::getUniqueId(implode('-', $element['#parents']) . '-wrapper');
     }
     //dpm($element, 'element');
     $date_storage = $element['#date'];

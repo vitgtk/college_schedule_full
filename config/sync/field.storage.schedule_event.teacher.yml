@@ -1,0 +1,19 @@
+uuid: c2a114b4-2ec0-4202-a3b4-843a1f241e20
+langcode: ru
+status: true
+dependencies:
+  module:
+    - college_schedule
+id: schedule_event.teacher
+field_name: teacher
+entity_type: schedule_event
+type: entity_reference
+settings:
+  target_type: teacher
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

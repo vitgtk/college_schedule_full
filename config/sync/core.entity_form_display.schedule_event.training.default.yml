@@ -1,0 +1,87 @@
+uuid: 6391bd8c-8c3e-49e2-8539-eaf37bde3ada
+langcode: ru
+status: true
+dependencies:
+  config:
+    - college_schedule.schedule_event_type.training
+    - field.field.schedule_event.training.discipline
+    - field.field.schedule_event.training.group
+    - field.field.schedule_event.training.hour
+    - field.field.schedule_event.training.location
+    - field.field.schedule_event.training.subgroup
+    - field.field.schedule_event.training.teacher
+id: schedule_event.training.default
+targetEntityType: schedule_event
+bundle: training
+mode: default
+content:
+  discipline:
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  group:
+    weight: 8
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  hour:
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  location:
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  name:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  subgroup:
+    weight: 9
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  teacher:
+    weight: 7
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+hidden: {  }

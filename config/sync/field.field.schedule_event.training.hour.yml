@@ -1,0 +1,23 @@
+uuid: a622a52a-ecf3-45f8-9eab-59c69ccffd5c
+langcode: ru
+status: true
+dependencies:
+  config:
+    - college_schedule.schedule_event_type.training
+    - field.storage.schedule_event.hour
+id: schedule_event.training.hour
+field_name: hour
+entity_type: schedule_event
+bundle: training
+label: Hour
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 1
+  max: 18
+  prefix: ''
+  suffix: ''
+field_type: integer

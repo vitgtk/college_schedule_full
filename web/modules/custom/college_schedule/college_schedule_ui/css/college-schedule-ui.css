@@ -8,7 +8,54 @@
 
 .schedule-day-item {
   min-height: 50px;
-  width: 17%;
-  background: #cccccc;
+  width: 20%;
+  background: transparent;
   margin: 0 auto;
+
+}
+
+.schedule-area-days--saturday-on {}
+.schedule-area-days--saturday-on .schedule-day-item {
+  width: 15%;
+}
+
+.schedule-hour-item {
+  border: #0a6eb4 dotted 1px;
+  margin: 3px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.schedule-hour-item .handle {}
+
+.schedule-hour-item .events {
+  flex: 1 0 auto;
+}
+.schedule-hour-item .events-edit {
+  background: url("../img/edit_64px.png") center no-repeat;
+  background-size: 50%;
+  height: 24px;
+  width: 24px;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.handle {
+  cursor: pointer;
+  background: url("../img/handle_64px.png") center;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  height: 24px;
+  width: 24px;
+  padding: 3px;
+}
+
+.schedule-event-item {
+  display: flex;
+}
+
+.schedule-event-item .s-content {
+  flex: 1 0 auto;
 }

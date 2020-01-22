@@ -1,0 +1,19 @@
+uuid: 8bf25d65-7a2d-4656-a8f0-70d4e2401be5
+langcode: ru
+status: true
+dependencies:
+  module:
+    - college_schedule
+id: schedule_event.group
+field_name: group
+entity_type: schedule_event
+type: entity_reference
+settings:
+  target_type: group_program
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

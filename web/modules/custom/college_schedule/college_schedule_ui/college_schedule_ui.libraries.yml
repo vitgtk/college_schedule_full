@@ -7,6 +7,8 @@ dashboard:
       css/college-schedule-ui.css: {}
   dependencies:
     - core/drupalSettings
+    - core/jquery
+    - jquery_ui_sortable/sortable
 #    - college_schedule_ui/jquery-labelauty
 
 # Third-party library (self hosted).

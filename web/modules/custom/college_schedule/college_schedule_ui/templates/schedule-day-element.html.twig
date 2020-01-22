@@ -16,14 +16,22 @@
   <div class="day-header">{{ content }}</div>
   <div class="day-events">
     {% for item in items %}
-      <div class="schedule-event-item"
-           data-event-number="{{ item.event_id }}"
-           data-day-id="{{ item.day_id }}">
-        {{ item.label }}
+      <div class="schedule-hour-item ui-state-default"
+           data-hour-id="{{ item.hour_id }}"
+           data-day-id="{{ item.time }}">
+        <div class="handle"><i class="handle-i cursor-pointer"></i></div>
+        <div class="events">
+          {% for event in item.events %}
+            <div class="schedule-event-item">
+              <div class="s-content">
+                <span>{{ event.label }}</span><span> ({{ event.subgroup }})</span><span> {{ event.place }}</span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="s-hour-id">{{ item.event_id }}</div>
+        <div class="events-edit"></div>
       </div>
     {% endfor %}
-  </div>
-  <div class="day-actions">
-    <button class="btn btn-success day-add-event">Add</button>
   </div>
 </div>

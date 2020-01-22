@@ -2,12 +2,16 @@
 
 namespace Drupal\college_schedule_ui\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -66,6 +70,7 @@ class DashboardForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['#attached']['library'][] = 'college_schedule_ui/dashboard';
+    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $form['select_container'] = [
       '#type' => 'container',
       '#attributes' => [
@@ -110,6 +115,17 @@ class DashboardForm extends FormBase {
       '#name' => 'save',
       '#value' => $this->t('Save'),
       '#button_type' => 'primary',
+      '#ajax' => [
+        'callback' => '::saveCallback',
+      ],
+    ];
+
+    $form['select_container']['actions']['add_container'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'id' => 'actions--add-container',
+        'class' => ['actions--add-container'],
+      ],
     ];
 
     $form['schedule_area'] = [
@@ -138,7 +154,7 @@ class DashboardForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Display result.
     $weekTimestamp = $form_state->getValue('week');
-    dpm($this->dateFormatter->format($weekTimestamp, 'custom', 'r'));
+    //dpm($this->dateFormatter->format($weekTimestamp, 'custom', 'r'));
   }
 
   /**
@@ -175,10 +191,23 @@ class DashboardForm extends FormBase {
     $items = [];
     for ($i = 1; $i < 16; $i++) {
       $items[] = [
-        'event_id' => 0,
-        'label' => 'Empty',
-        'day_id' => $i,
         'time' => '08:00-08:45',
+        'events' => [
+          0 => [
+            'event_id' => 1,
+            'label' => 'Математика',
+            'place' => '24 к.',
+            'subgroup' => '1',
+          ],
+          1 => [
+            'event_id' => 2,
+            'label' => 'Программирование',
+            'place' => '21 к.',
+            'subgroup' => '2',
+          ],
+        ],
+        'hour_id' => $i,
+        'empty' => FALSE,
       ];
     }
     //dpm($items);
@@ -195,6 +224,7 @@ class DashboardForm extends FormBase {
     }
 
     $response->addCommand(new HtmlCommand('.schedule-area', $build));
+    $response->addCommand(new HtmlCommand('.actions--add-container', $this->addLink($group_program, $week)));
 
     return $response;
   }
@@ -209,6 +239,34 @@ class DashboardForm extends FormBase {
    */
   public function saveCallback(array &$form, FormStateInterface $form_state) {}
 
+  /**
+   * Add callback function.
+   *
+   * @param array $form
+   *   Form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state object.
+   *
+   * @deprecated
+   */
+  public function addCallback(array &$form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+    $group_program = $form_state->getValue('group_program');
+    $week = $form_state->getValue('week');
+    $saturday = $form_state->getValue('saturday');
+    $data = $this->loadSchedule($group_program, $week, $saturday);
+    $response->addCommand(new SettingsCommand(['college_schedule' => $data]));
+    $title = $this->t('Add event');
+    $content = \Drupal::formBuilder()->getForm('\Drupal\college_schedule_ui\Form\EventsForm');
+
+    $dialog_options = [
+      'minHeight' => 200,
+      'resizable' => TRUE,
+    ];
+    $settings = [];
+    $response->addCommand(new OpenModalDialogCommand($title, $content, $dialog_options, $settings));
+    return $response;
+  }
 
   /**
    * Get schedule data.
@@ -258,6 +316,39 @@ class DashboardForm extends FormBase {
    */
   private function monday() {
     return new DrupalDateTime('Monday noon -1 week');
+  }
+
+  /**
+   * Helper function.
+   *
+   * @param null|int $group
+   *   Grout ID.
+   * @param null|int $week
+   *   Week.
+   *
+   * @return array
+   *   Link render array
+   */
+  private function addLink($group = NULL, $week = NULL) {
+    $build['content'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Add'),
+      '#url' => Url::fromRoute('college_schedule_ui.events_form', [
+        'group' => $group,
+        'week' => $week,
+      ]),
+      '#options' => [
+        'attributes' => [
+          'class' => ['use-ajax', 'button', 'button--danger'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => Json::encode([
+            'width' => 700,
+          ]),
+        ],
+      ],
+      '#attached' => ['library' => ['core/drupal.dialog.ajax']],
+    ];
+    return $build;
   }
 
 }
