@@ -1,0 +1,19 @@
+langcode: ru
+status: true
+dependencies:
+  module:
+    - college_schedule
+id: schedule_event.hour
+field_name: hour
+entity_type: schedule_event
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

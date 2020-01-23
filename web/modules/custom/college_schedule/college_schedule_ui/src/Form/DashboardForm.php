@@ -2,7 +2,6 @@
 
 namespace Drupal\college_schedule_ui\Form;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
@@ -79,11 +78,7 @@ class DashboardForm extends FormBase {
     ];
     $form['select_container']['group_program'] = [
       '#type' => 'select',
-      '#options' => [
-        '1' => '12о',
-        '2' => '22о',
-        '3' => '32о',
-      ],
+      '#options' => $this->groupProgramOptions(),
       '#title' => $this->t('Group'),
       '#weight' => '0',
     ];
@@ -188,43 +183,20 @@ class DashboardForm extends FormBase {
       $build['content']['#attributes']['class'][] = 'schedule-area-days--saturday-on';
     }
 
-    $items = [];
-    for ($i = 1; $i < 16; $i++) {
-      $items[] = [
-        'time' => '08:00-08:45',
-        'events' => [
-          0 => [
-            'event_id' => 1,
-            'label' => 'Математика',
-            'place' => '24 к.',
-            'subgroup' => '1',
-          ],
-          1 => [
-            'event_id' => 2,
-            'label' => 'Программирование',
-            'place' => '21 к.',
-            'subgroup' => '2',
-          ],
-        ],
-        'hour_id' => $i,
-        'empty' => FALSE,
-      ];
-    }
-    //dpm($items);
-    // data-schedule-event-number schedule-event-item
-    foreach ($data as $date_storage => $item) {
+
+    foreach ($data as $date_storage => $itemsByHour) {
 
       $element_key = 'day' . $date_storage;
       $build['content'][$element_key] = [
         '#type' => 'schedule_day',
         '#content' => $date_storage,
         '#date' => $date_storage,
-        '#items' => $items,
+        '#items' => $itemsByHour, /* events group by hour */
       ];
     }
 
     $response->addCommand(new HtmlCommand('.schedule-area', $build));
-    $response->addCommand(new HtmlCommand('.actions--add-container', $this->addLink($group_program, $week)));
+    // $response->addCommand(new HtmlCommand('.actions--add-container', $this->addLink($group_program, $week)));
 
     return $response;
   }
@@ -281,11 +253,15 @@ class DashboardForm extends FormBase {
     $count = $saturday ? 6 : 5;
     $data = [];
     $date = DrupalDateTime::createFromTimestamp($week);
+    /** @var \Drupal\college_schedule_ui\ScheduleDataInterface $scheduleStorage */
+    $scheduleStorage = \Drupal::service('college_schedule_ui.schedule_data');
+    $entities = $scheduleStorage->load($group_program, $week, $saturday);
     for ($i = 0; $i < $count; $i++) {
       $key = $date->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
-      $data[$key] = $date->format('r');
+      $data[$key] = $entities[$key];
       $date->modify('+ 24 hours');
     }
+
     return $data;
   }
 
@@ -349,6 +325,34 @@ class DashboardForm extends FormBase {
       '#attached' => ['library' => ['core/drupal.dialog.ajax']],
     ];
     return $build;
+  }
+
+  private function groupProgramOptions() {
+    $departmentStorage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    $departments = $departmentStorage->loadByProperties(['vid' => 'department']);
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
+    $storage = \Drupal::entityTypeManager()->getStorage('group_program');
+    $options = [];
+    $items = $storage->loadMultiple();
+
+
+    foreach ($items as $id => $group_program) {
+      $options[$id] = $group_program->label();
+    }
+
+    $group_options = [];
+    foreach ($departments as $department) {
+      if ($groups = $storage->loadByProperties(['department' => $department->id()])) {
+        $options = [];
+        foreach ($groups as $id => $group_program) {
+          $options[$id] = $group_program->label();
+        }
+        $group_options[$department->label()] = $options;
+      }
+
+    }
+
+    return $group_options;
   }
 
 }

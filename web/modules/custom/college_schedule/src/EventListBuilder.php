@@ -19,6 +19,8 @@ class EventListBuilder extends EntityListBuilder {
   public function buildHeader() {
     $header['id'] = $this->t('Event ID');
     $header['name'] = $this->t('Name');
+    $header['date'] = $this->t('Date');
+    $header['hour'] = $this->t('Hour');
     return $header + parent::buildHeader();
   }
 
@@ -33,6 +35,8 @@ class EventListBuilder extends EntityListBuilder {
       'entity.schedule_event.edit_form',
       ['schedule_event' => $entity->id()]
     );
+    $row['date'] = $entity->get('date')->value;
+    $row['hour'] = $entity->get('hour')->value;
     return $row + parent::buildRow($entity);
   }
 

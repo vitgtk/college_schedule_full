@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - college_schedule.schedule_event_type.training
+    - field.storage.schedule_event.group
+id: schedule_event.training.group
+field_name: group
+entity_type: schedule_event
+bundle: training
+label: Group
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:group_program'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

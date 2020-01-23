@@ -88,19 +88,60 @@ class ScheduleDay extends RenderElement {
     if (!isset($element['#id'])) {
       // $element['#id'] = Html::getUniqueId(implode('-', $element['#parents']) . '-wrapper');
     }
+
+    $itemsByHour = $element['#items'];
+
+    $items = [];
+    foreach ($itemsByHour as $hour => $events) {
+      $entry = [];
+      $entry['hour_id'] = $hour;
+      $entry['time'] = 'time:' . $hour;
+      $entry['entities'] = $events;
+
+      $list = [];
+      foreach ($events as $event) {
+        /** @var  \Drupal\college_schedule\Entity\Event $event */
+        $listItem = [
+          'event_id' => $event->id(),
+          'label' => $event->label(),
+        ];
+        if ($event->bundle() == 'training') {
+          $listItem['place'] = $event->get('location')->entity->label();
+          $listItem['location'] = $event->get('location')->entity->label();
+          $listItem['label'] = $event->get('discipline')->entity->label();
+          $listItem['subgroup'] = $event->get('subgroup')->value;
+        }
+        $list[] = $listItem;
+      }
+      $entry['events'] = $list;
+      $items[] = $entry;
+    }
+
+    if (empty($itemsByHour)) {
+      $entry = [];
+      $entry['hour_id'] = 0;
+      $entry['time'] = 'time:' . 0;
+      $entry['events'] = [];
+      $items[] = $entry;
+    }
+
+    $element['#hours'] = $items;
+
     //dpm($element, 'element');
     $date_storage = $element['#date'];
     $date = DrupalDateTime::createFromFormat(DateTimeItemInterface::DATE_STORAGE_FORMAT, $date_storage);
 
     $element['#attributes']['data-schedule-day'] = $element['#date'];
-    // Normal attributes for a <marquee> tag do not include a 'random' option
-    // for scroll amount. Our marquee element type does though. So we use this
-    // #pre_render callback to check if the element was defined with the value
-    // 'random' for the scrollamount attribute, and if so replace the string
-    // with a random number.
+
+
+    // hour_id.
+    // is_empty.
+    // events.
+    // time.
     if ($element['#attributes']['scrollamount'] == 'random') {
       $element['#attributes']['scrollamount'] = abs(rand(1, 50));
     }
+    // dpm($element, 'element build');
     return $element;
   }
 

@@ -1,0 +1,52 @@
+uuid: 3eaf3af8-1f4f-4eed-937d-a65aeb1f1645
+langcode: ru
+status: true
+dependencies:
+  config:
+    - college_schedule.schedule_event_type.lunch
+    - field.field.schedule_event.lunch.date
+    - field.field.schedule_event.lunch.group
+    - field.field.schedule_event.lunch.hour
+  module:
+    - datetime
+id: schedule_event.lunch.default
+targetEntityType: schedule_event
+bundle: lunch
+mode: default
+content:
+  date:
+    weight: -3
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  group:
+    weight: -1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  hour:
+    weight: -2
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  name:
+    label: hidden
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  langcode: true

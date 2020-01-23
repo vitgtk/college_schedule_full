@@ -4,17 +4,29 @@ status: true
 dependencies:
   config:
     - college_schedule.schedule_event_type.training
+    - field.field.schedule_event.training.date
     - field.field.schedule_event.training.discipline
     - field.field.schedule_event.training.group
     - field.field.schedule_event.training.hour
     - field.field.schedule_event.training.location
     - field.field.schedule_event.training.subgroup
     - field.field.schedule_event.training.teacher
+  module:
+    - datetime
 id: schedule_event.training.default
 targetEntityType: schedule_event
 bundle: training
 mode: default
 content:
+  date:
+    weight: 4
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
   discipline:
     weight: -1
     label: above

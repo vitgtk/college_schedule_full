@@ -15,7 +15,7 @@
 <div{{ attributes }}>
   <div class="day-header">{{ content }}</div>
   <div class="day-events">
-    {% for item in items %}
+    {% for item in hours %}
       <div class="schedule-hour-item ui-state-default"
            data-hour-id="{{ item.hour_id }}"
            data-day-id="{{ item.time }}">
@@ -29,7 +29,7 @@
             </div>
           {% endfor %}
         </div>
-        <div class="s-hour-id">{{ item.event_id }}</div>
+        <div class="s-hour-id">({{ item.hour_id }})</div>
         <div class="events-edit"></div>
       </div>
     {% endfor %}
