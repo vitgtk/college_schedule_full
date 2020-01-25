@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\college_schedule_ui;
+namespace Drupal\college_schedule_api;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;

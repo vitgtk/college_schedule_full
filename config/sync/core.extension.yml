@@ -4,6 +4,7 @@ module:
   block: 0
   breakpoint: 0
   college_schedule: 0
+  college_schedule_api: 0
   college_schedule_ui: 0
   config: 0
   config_inspector: 0

@@ -37,9 +37,9 @@ class EventsForm extends FormBase {
   protected $entityTypeManager;
 
   /**
-   * Drupal\college_schedule_ui\ScheduleCalendarInterface definition.
+   * Drupal\college_schedule_api\ScheduleCalendarInterface definition.
    *
-   * @var \Drupal\college_schedule_ui\ScheduleCalendarInterface
+   * @var \Drupal\college_schedule_api\ScheduleCalendarInterface
    */
   protected $calendar;
 
@@ -71,7 +71,7 @@ class EventsForm extends FormBase {
     $instance = parent::create($container);
     $instance->configFactory = $container->get('config.factory');
     $instance->entityTypeManager = $container->get('entity_type.manager');
-    $instance->calendar = $container->get('college_schedule_ui.calendar');
+    $instance->calendar = $container->get('college_schedule_api.calendar');
     $instance->tempstorePrivate = $container->get('tempstore.private');
     $instance->dateFormatter = $container->get('date.formatter');
     $instance->scheduleBuilder = $container->get('college_schedule_ui.builder');
@@ -238,8 +238,7 @@ class EventsForm extends FormBase {
 
       $storage = $this->entityTypeManager->getStorage('schedule_event');
       $hours = $form_state->getValue('hours');
-      dpm($hours ,' hours');
-      dpm($entry ,' hours');
+
       foreach ($hours as $id => $hour) {
         /** @var \Drupal\college_schedule\Entity\EventInterface $event */
         $event = $storage->create($entry);
@@ -336,6 +335,15 @@ class EventsForm extends FormBase {
     return $options;
   }
 
+  /**
+   * Helper.
+   *
+   * @param int|NULL $discipline_id
+   *
+   * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
   private function teacherOptions(int $discipline_id = NULL) {
     $options = [];
     $storage = $this->entityTypeManager->getStorage('teacher');

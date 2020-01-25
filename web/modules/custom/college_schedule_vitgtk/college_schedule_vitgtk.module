@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains college_schedule_vitgtk.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function college_schedule_vitgtk_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the college_schedule_vitgtk module.
+    case 'help.page.college_schedule_vitgtk':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+
+    default:
+  }
+}

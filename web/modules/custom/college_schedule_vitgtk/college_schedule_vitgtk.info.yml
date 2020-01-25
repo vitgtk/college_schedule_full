@@ -1,0 +1,7 @@
+name: 'college_schedule_vitgtk'
+type: module
+description: 'My Awesome Module'
+core: 8.x
+package: 'Custom'
+dependencies:
+  - college_schedule

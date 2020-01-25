@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\college_schedule_ui;
+
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Cache\CacheBackendInterface;

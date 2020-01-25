@@ -2,7 +2,7 @@
 
 namespace Drupal\college_schedule_ui;
 
-use Drupal\college_schedule_ui\ScheduleDataInterface;
+use Drupal\college_schedule_api\ScheduleDataInterface;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -24,6 +24,9 @@ class Builder implements ScheduleBuilderInterface {
 
   /**
    * Constructs a new Builder object.
+   *
+   * @param \Drupal\college_schedule_api\ScheduleDataInterface $schedule_data
+   *   Schedule data.
    */
   public function __construct(ScheduleDataInterface $schedule_data) {
     $this->scheduleData = $schedule_data;

@@ -1,0 +1,10 @@
+services:
+  logger.channel.college_schedule_api:
+    parent: logger.channel_base
+    arguments: ['college_schedule_api']
+  college_schedule_api.data:
+    class: Drupal\college_schedule_api\ScheduleData
+    arguments: ['@config.factory', '@cache.default', '@entity_type.manager', '@logger.channel.college_schedule_api']
+  college_schedule_api.calendar:
+    class: Drupal\college_schedule_api\Calendar
+    arguments: ['@entity_type.manager', '@config.factory']

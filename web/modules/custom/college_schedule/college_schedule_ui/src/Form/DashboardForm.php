@@ -2,11 +2,9 @@
 
 namespace Drupal\college_schedule_ui\Form;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
-use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -159,11 +157,7 @@ class DashboardForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Display result.
-    $weekTimestamp = $form_state->getValue('week');
-    //dpm($this->dateFormatter->format($weekTimestamp, 'custom', 'r'));
-  }
+  public function submitForm(array &$form, FormStateInterface $form_state) {}
 
   /**
    * Load callback function.
@@ -201,18 +195,26 @@ class DashboardForm extends FormBase {
   /**
    * Helper function.
    *
+   * @param int $recurrences
+   *   Count recurrences.
+   *
    * @return array
    *   Options list.
    */
-  private function weekList() {
+  private function weekList(int $recurrences = 10) {
     $options = [];
-    $date = $this->monday();
-    $date->modify('- 1 week');
-
-    for ($i = 1; $i < 9; $i++) {
-      $key = $date->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
-      $options[$key] = $this->dateFormatter->format($date->format('U'), 'college_schedule_ui');
-      $date->modify('+ 1 week');
+    try {
+      $startMonday = new \DateTime('Monday noon this week');
+      $startMonday->modify('-1 week');
+      $interval = new \DateInterval('P7D');
+      $weeks = new \DatePeriod($startMonday, $interval, $recurrences);
+      foreach ($weeks as $week) {
+        $key = $week->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+        $options[$key] = $this->dateFormatter->format($week->format('U'), 'college_schedule_ui');
+      }
+    }
+    catch (\Exception $e) {
+      $this->logger('college_schedule_ui')->warning($e->getMessage());
     }
     return $options;
   }
@@ -224,40 +226,7 @@ class DashboardForm extends FormBase {
    *   Monday
    */
   private function monday() {
-    return new DrupalDateTime('Monday noon -1 week');
-  }
-
-  /**
-   * Helper function.
-   *
-   * @param null|int $group
-   *   Grout ID.
-   * @param null|int $week
-   *   Week.
-   *
-   * @return array
-   *   Link render array
-   */
-  private function addLink($group = NULL, $week = NULL) {
-    $build['content'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Add'),
-      '#url' => Url::fromRoute('college_schedule_ui.events_form', [
-        'group' => $group,
-        'week' => $week,
-      ]),
-      '#options' => [
-        'attributes' => [
-          'class' => ['use-ajax', 'button', 'button--danger'],
-          'data-dialog-type' => 'modal',
-          'data-dialog-options' => Json::encode([
-            'width' => 700,
-          ]),
-        ],
-      ],
-      '#attached' => ['library' => ['core/drupal.dialog.ajax']],
-    ];
-    return $build;
+    return new DrupalDateTime('Monday noon this week');
   }
 
   private function groupProgramOptions() {
