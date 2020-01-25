@@ -1,0 +1,19 @@
+uuid: 201be542-28d4-4918-ab58-074fe7ef89c0
+langcode: ru
+status: true
+dependencies:
+  config:
+    - college_schedule.schedule_event_type.training
+    - field.storage.schedule_event.note
+id: schedule_event.training.note
+field_name: note
+entity_type: schedule_event
+bundle: training
+label: Note
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

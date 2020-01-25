@@ -60,7 +60,8 @@ class ScheduleDay extends RenderElement {
       // default. The expectation is that a user will add the content that they
       // would like to see inside the marquee tag. This custom property is
       // accounted for in the associated template file.
-      '#content' => '',
+      '#content' => '', /* remove */
+      '#empty' => '',
       '#date' => NULL,
       '#items' => NULL,
       '#attributes' => [
@@ -88,36 +89,52 @@ class ScheduleDay extends RenderElement {
     if (!isset($element['#id'])) {
       // $element['#id'] = Html::getUniqueId(implode('-', $element['#parents']) . '-wrapper');
     }
-
     $itemsByHour = $element['#items'];
-
     $items = [];
-    foreach ($itemsByHour as $hour => $events) {
-      $entry = [];
-      $entry['hour_id'] = $hour;
-      $entry['time'] = 'time:' . $hour;
-      $entry['entities'] = $events;
 
-      $list = [];
-      foreach ($events as $event) {
-        /** @var  \Drupal\college_schedule\Entity\Event $event */
-        $listItem = [
-          'event_id' => $event->id(),
-          'label' => $event->label(),
-        ];
-        if ($event->bundle() == 'training') {
-          $listItem['place'] = $event->get('location')->entity->label();
-          $listItem['location'] = $event->get('location')->entity->label();
-          $listItem['label'] = $event->get('discipline')->entity->label();
-          $listItem['subgroup'] = $event->get('subgroup')->value;
+    if (!empty($itemsByHour)) {
+      $hours = array_keys($itemsByHour);
+      $lastHour = max($hours);
+      for ($i = 1; $i < $lastHour; $i++) {
+        if (!isset($itemsByHour[$i])) {
+          $itemsByHour[$i] = [];
         }
-        $list[] = $listItem;
       }
-      $entry['events'] = $list;
-      $items[] = $entry;
-    }
+      ksort($itemsByHour);
+      foreach ($itemsByHour as $hour => $events) {
+        $entry = [];
+        $entry['hour_id'] = $hour;
+        $entry['time'] = 'time:' . $hour;
+        $entry['entities'] = $events;
 
-    if (empty($itemsByHour)) {
+        $list = [];
+        $event_type = '';
+
+        if (empty($events)) {
+          $event_type = 'empty-hour';
+        }
+        foreach ($events as $event) {
+          /** @var  \Drupal\college_schedule\Entity\Event $event */
+          $listItem = [
+            'event_id' => $event->id(),
+            'label' => $event->label(),
+            'type' => $event->bundle(),
+          ];
+          $event_type = $event->bundle();
+          if ($event->bundle() == 'training') {
+            $listItem['place'] = $event->get('location')->entity->label();
+            $listItem['location'] = $event->get('location')->entity->label();
+            $listItem['label'] = $event->get('discipline')->entity->label();
+            $listItem['subgroup'] = $event->get('subgroup')->value;
+          }
+          $list[] = $listItem;
+        }
+        $entry['events'] = $list;
+        $entry['type'] = $event_type;
+        $items[] = $entry;
+      }
+    }
+    else {
       $entry = [];
       $entry['hour_id'] = 0;
       $entry['time'] = 'time:' . 0;
@@ -138,9 +155,6 @@ class ScheduleDay extends RenderElement {
     // is_empty.
     // events.
     // time.
-    if ($element['#attributes']['scrollamount'] == 'random') {
-      $element['#attributes']['scrollamount'] = abs(rand(1, 50));
-    }
     // dpm($element, 'element build');
     return $element;
   }

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.group_program.group_program.department
+    - field.field.group_program.group_program.disciplines
   module:
     - college_schedule
 id: group_program.group_program.default
@@ -16,6 +17,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  disciplines:
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   langcode:
     type: language_select

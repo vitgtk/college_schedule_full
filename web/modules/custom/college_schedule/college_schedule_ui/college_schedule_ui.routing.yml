@@ -6,12 +6,18 @@ college_schedule_ui.college_schedule_dashboard:
   requirements:
     _access: 'TRUE'
 college_schedule_ui.events_form:
-  path: '/college_schedule_ui/form/events/{group}/{week}'
+  path: '/college_schedule_ui/form/events/{group}/{day}'
   defaults:
     _form: '\Drupal\college_schedule_ui\Form\EventsForm'
     _title: 'EventsForm'
   requirements:
     _access: 'TRUE'
+  options:
+    parameters:
+      day:
+        type: schedule_day
+      group:
+        type: entity:group_program
 
 college_schedule_ui.dashboard_controller_hello:
   path: '/college_schedule_ui/hello/{name}'

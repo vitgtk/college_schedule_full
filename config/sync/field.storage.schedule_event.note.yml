@@ -1,0 +1,19 @@
+uuid: 76e86be1-9b2e-4aab-b074-f2aeded8f96c
+langcode: ru
+status: true
+dependencies:
+  module:
+    - college_schedule
+id: schedule_event.note
+field_name: note
+entity_type: schedule_event
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

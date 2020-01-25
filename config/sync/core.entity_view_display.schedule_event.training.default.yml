@@ -9,6 +9,7 @@ dependencies:
     - field.field.schedule_event.training.group
     - field.field.schedule_event.training.hour
     - field.field.schedule_event.training.location
+    - field.field.schedule_event.training.note
     - field.field.schedule_event.training.subgroup
     - field.field.schedule_event.training.teacher
   module:
@@ -68,6 +69,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  note:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
   subgroup:
     weight: 3
     label: above

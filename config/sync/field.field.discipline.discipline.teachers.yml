@@ -1,0 +1,26 @@
+uuid: f5d42922-fe0a-4fd6-a298-09c3823c1eda
+langcode: ru
+status: true
+dependencies:
+  config:
+    - field.storage.discipline.teachers
+  module:
+    - college_schedule
+id: discipline.discipline.teachers
+field_name: teachers
+entity_type: discipline
+bundle: discipline
+label: Teachers
+description: 'Список преподавателей дисциплины'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:teacher'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

@@ -1,0 +1,19 @@
+uuid: 7ff5540d-c489-45df-b39e-bdf2f9a513da
+langcode: ru
+status: true
+dependencies:
+  module:
+    - college_schedule
+id: group_program.disciplines
+field_name: disciplines
+entity_type: group_program
+type: entity_reference
+settings:
+  target_type: discipline
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

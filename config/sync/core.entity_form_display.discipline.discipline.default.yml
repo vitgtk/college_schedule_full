@@ -1,0 +1,39 @@
+uuid: 3311e3f8-d070-41af-a3f4-79a56a95c3f8
+langcode: ru
+status: true
+dependencies:
+  config:
+    - field.field.discipline.discipline.teachers
+  module:
+    - college_schedule
+id: discipline.discipline.default
+targetEntityType: discipline
+bundle: discipline
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  teachers:
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+hidden: {  }

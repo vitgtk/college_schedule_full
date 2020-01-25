@@ -16,8 +16,9 @@
   <div class="day-header">{{ content }}</div>
   <div class="day-events">
     {% for item in hours %}
-      <div class="schedule-hour-item ui-state-default"
+      <div class="schedule-hour-item cs-board--hour-item ui-state-default hour-type--{{ item.type }}"
            data-hour-id="{{ item.hour_id }}"
+           data-hour-type="{{ item.type }}"
            data-day-id="{{ item.time }}">
         <div class="handle"><i class="handle-i cursor-pointer"></i></div>
         <div class="events">

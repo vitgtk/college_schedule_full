@@ -47,27 +47,32 @@ class ScheduleData implements ScheduleDataInterface {
    *
    * @param int $group
    *   Group ID.
-   * @param int $week
-   *   Week timestamp.
+   * @param string $week
+   *   Week DATE_STORAGE_FORMAT string.
+   * @param bool $saturday
+   *   Bool flag.
+   *
+   * @return array
+   *   Date arrat.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function load(int $group, int $week, $saturday = FALSE) {
+  public function load(int $group, string $week, $saturday = FALSE) {
     /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
     $storage = $this->entityTypeManager->getStorage('schedule_event');
 
-    $weekDate = DrupalDateTime::createFromTimestamp($week);
-    $startDate = $weekDate->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+    $weekDate = DrupalDateTime::createFromFormat(DateTimeItemInterface::DATE_STORAGE_FORMAT, $week);
     $weekDate->modify('+5 day');
     $endDate = $weekDate->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+
     $query = $storage->getQuery();
     $query
       // ->condition('type', 'training')
       ->condition('group', $group)
       ->condition('date.value', $endDate, '<=')
-      ->condition('date.value', $startDate, '>=')
-      ->sort('date');
+      ->condition('date.value', $week, '>=')
+      ->sort('date')->sort('subgroup');
 
     $ids = $query->execute();
     /** @var \Drupal\Core\Entity\ContentEntityInterface[] $items */
@@ -97,10 +102,6 @@ class ScheduleData implements ScheduleDataInterface {
     return $items;
   }
 
-  public function loadWeek(int $group, int $week, $saturday = FALSE) {
-    $weekDate = DrupalDateTime::createFromTimestamp($week);
-
-
-  }
+  public function loadWeek(int $group, DrupalDateTime $week, $saturday = FALSE) {}
 
 }

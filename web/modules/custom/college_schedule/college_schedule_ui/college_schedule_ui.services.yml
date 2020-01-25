@@ -5,3 +5,21 @@ services:
   college_schedule_ui.schedule_data:
     class: Drupal\college_schedule_ui\ScheduleData
     arguments: ['@entity_type.manager', '@cache.default', '@config.factory']
+
+  college_schedule_ui.schedule_day_param_converter:
+    class: Drupal\college_schedule_ui\ScheduleDayParamConverter
+    arguments: ['@database']
+    tags:
+      - { name: paramconverter }
+  logger.channel.college_schedule_ui:
+    parent: logger.channel_base
+    arguments: ['college_schedule_ui']
+  college_schedule_ui.builder:
+    class: Drupal\college_schedule_ui\Builder
+    arguments: ['@college_schedule_ui.schedule_data']
+  logger.channel.college_schedule_ui:
+    parent: logger.channel_base
+    arguments: ['college_schedule_ui']
+  college_schedule_ui.calendar:
+    class: Drupal\college_schedule_ui\Calendar
+    arguments: ['@entity_type.manager', '@config.factory']

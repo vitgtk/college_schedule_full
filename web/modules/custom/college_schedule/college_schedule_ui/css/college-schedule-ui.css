@@ -1,7 +1,4 @@
-.schedule-area-days {
-  display: flex;
-  flex-wrap: wrap;
-}
+
 .schedule-area-days--saturday-on {
 
 }
@@ -58,4 +55,55 @@
 
 .schedule-event-item .s-content {
   flex: 1 0 auto;
+}
+
+.cs-board--dashboard {}
+
+.cs-board--controls {}
+
+.cs-board--schedule-area {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cs-board--days-area {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.cs-board--day-area {
+  min-height: 50px;
+  width: 20%;
+  background: transparent;
+  margin: 0 auto;
+}
+
+/* Add button styles */
+.cs-board--dashboard .button--add {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.cs-board--dashboard .button--add:hover {
+  color: #fff;
+  background-color: #218838;
+}
+
+.cs-board--dashboard .button--add:active {
+  background-color: #1e7e34;
+}
+
+.hour-type--empty-hour .handle {
+  display: none;
+}
+
+
+.cs-board--hour-item {}
+.cs-board--hour-item--new {}
+.cs-board--hour-item--change {
+  border-color: #ffc107!important;
+}
+
+.cs-board--hour-item--update {
+  border-color: #dc3545!important;
 }
