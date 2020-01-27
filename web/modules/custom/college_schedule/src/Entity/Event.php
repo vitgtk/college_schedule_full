@@ -127,6 +127,45 @@ class Event extends ContentEntityBase implements EventInterface {
         'weight' => -3,
       ]);
 
+    $fields['group_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Group'))
+      ->setDescription(t('The group ID.'))
+      ->setSetting('target_type', 'group_program')
+      ->setSetting('handler', 'default')
+      ->setDisplayOptions('form', [
+        'type'     => 'entity_reference_autocomplete',
+        'weight'   => 5,
+        'settings' => [
+          'match_operator'    => 'CONTAINS',
+          'size'              => '60',
+          'autocomplete_type' => 'tags',
+          'placeholder'       => '',
+        ],
+      ])
+      ->setCardinality(1)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
+
+    $fields['hour'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Hour'))
+      ->setDescription(t('Hour ID.'))
+      ->setCardinality(1)
+      ->setSetting('unsigned', FALSE)
+      ->setSetting('size', 'normal')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'number_integer',
+        'weight' => -2,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'number',
+        'weight' => -2,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
+
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
       ->setDescription(t('The time that the entity was created.'));

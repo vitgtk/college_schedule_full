@@ -15,24 +15,6 @@
 <div{{ attributes }}>
   <div class="day-header">{{ content }}</div>
   <div class="day-events">
-    {% for item in hours %}
-      <div class="schedule-hour-item cs-board--hour-item ui-state-default hour-type--{{ item.type }}"
-           data-hour-id="{{ item.hour_id }}"
-           data-hour-type="{{ item.type }}"
-           data-day-id="{{ item.time }}">
-        <div class="handle"><i class="handle-i cursor-pointer"></i></div>
-        <div class="events">
-          {% for event in item.events %}
-            <div class="schedule-event-item">
-              <div class="s-content">
-                <span>{{ event.label }}</span><span> ({{ event.subgroup }})</span><span> {{ event.place }}</span>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-        <div class="s-hour-id">({{ item.hour_id }})</div>
-        <div class="events-edit"></div>
-      </div>
-    {% endfor %}
+    {{ hours }}
   </div>
 </div>

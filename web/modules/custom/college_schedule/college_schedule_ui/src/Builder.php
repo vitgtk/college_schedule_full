@@ -2,6 +2,7 @@
 
 namespace Drupal\college_schedule_ui;
 
+use Drupal\college_schedule\Entity\Timetable;
 use Drupal\college_schedule_api\ScheduleDataInterface;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -45,6 +46,8 @@ class Builder implements ScheduleBuilderInterface {
     $data = $this->scheduleData->load($group_program, $week, $saturday);
 
     $days = $this->getDaysList($week, $saturday);
+    /** @var \Drupal\college_schedule_api\ScheduleCalendarInterface $calendar */
+    $calendar = \Drupal::service('college_schedule_api.calendar');
 
     $build['content'] = [
       '#type' => 'container',
@@ -80,6 +83,7 @@ class Builder implements ScheduleBuilderInterface {
         '#type' => 'schedule_day',
         '#content' => $date_storage,
         '#date' => $date_storage,
+        '#timetable' => $calendar->getTimetable($date_storage),
         '#items' => isset($data[$date_storage]) ? $data[$date_storage] : [], /* events group by hour */
         '#attributes' => [
           'class' => ['cs-board--day-grid'],

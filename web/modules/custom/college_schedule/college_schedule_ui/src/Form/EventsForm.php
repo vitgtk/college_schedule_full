@@ -88,10 +88,11 @@ class EventsForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, GroupProgramInterface $group = NULL, DrupalDateTime $day = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, GroupProgramInterface $group = NULL, DrupalDateTime $day = NULL, int $hour = NULL) {
     $form['#prefix'] = '<div id="modal_events_form">';
     $form['#suffix'] = '</div>';
 
+    dpm($hour, 'hour');
     $form['#title'] = $this->t('Group @group, schedule @date', [
       '@group' => $group->label(),
       '@date' => $this->dateFormatter->format($day->getTimestamp()),
@@ -165,13 +166,17 @@ class EventsForm extends FormBase {
       '#required' => TRUE,
       '#weight' => 4,
     ];
+    /** @var \Drupal\college_schedule_api\ScheduleDataInterface $data */
+    $data = \Drupal::service('college_schedule_api.data');
+    $data->getNotFreeHours($group->id(), $day->format(DATETIME_DATE_STORAGE_FORMAT));
 
+    $default_hours = ($hour === NULL) ? NULL : $hour;
     $form['subgroup_location']['hours'] = [
       '#type' => 'select',
       '#title' => $this->t('Hours'),
       '#multiple' => TRUE,
       '#options' => $this->hours(),
-      '#default_value' => NULL,
+      '#default_value' => $default_hours,
       '#description' => $this->t('Hours'),
       '#required' => TRUE,
       '#weight' => 5,

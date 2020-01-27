@@ -1,0 +1,33 @@
+uuid: 9efd0702-90fe-479d-91a1-af7eff874cd6
+langcode: ru
+status: true
+dependencies:
+  config:
+    - field.field.teacher.teacher.photo
+  module:
+    - college_schedule
+    - image
+id: teacher.teacher.default
+targetEntityType: teacher
+bundle: teacher
+mode: default
+content:
+  name:
+    label: hidden
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  photo:
+    weight: -3
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  langcode: true

@@ -91,4 +91,15 @@ class Timetable extends ConfigEntityBase implements TimetableInterface {
     return $this->timing[1]['start'] . '-' . $this->timing[$last]['end'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function hourDuration($hourId) {
+    if (empty($this->timing[$hourId])) {
+      return NULL;
+    }
+    $times = $this->timing[$hourId];
+    return $times['start'] . '-' . $times['end'];
+  }
+
 }

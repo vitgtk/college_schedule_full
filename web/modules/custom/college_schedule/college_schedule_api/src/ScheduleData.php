@@ -45,6 +45,13 @@ class ScheduleData implements ScheduleDataInterface {
   protected $logger;
 
   /**
+   * Event storage.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $storage;
+
+  /**
    * Constructs a new ScheduleData object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -73,30 +80,27 @@ class ScheduleData implements ScheduleDataInterface {
    */
   public function load(int $group, string $week, $saturday = FALSE) {
     $data = [];
-    try {
-      /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
-      $storage = $this->entityTypeManager->getStorage('schedule_event');
-    }
-    catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
-      $this->logger->error($e->getMessage());
-      return $data;
-    }
 
     $weekDate = DrupalDateTime::createFromFormat(DateTimeItemInterface::DATE_STORAGE_FORMAT, $week);
     $weekDate->modify('+5 day');
     $endDate = $weekDate->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
 
-    $query = $storage->getQuery();
+    $query = $this->storage()->getQuery();
     $query
-      ->condition('group', $group)
+      ->condition('group_id', $group)
       ->condition('date.value', $endDate, '<=')
       ->condition('date.value', $week, '>=')
       ->sort('date')->sort('subgroup');
 
     $ids = $query->execute();
     /** @var \Drupal\Core\Entity\ContentEntityInterface[] $items */
-    $items = $storage->loadMultiple($ids);
-
+    try {
+      $items = $this->storage()->loadMultiple($ids);
+    }
+    catch (\Exception $e) {
+      $this->logger->error($e->getMessage());
+      return $data;
+    }
 
     foreach ($items as $id => $item) {
       $date = $item->get('date')->value;
@@ -105,6 +109,43 @@ class ScheduleData implements ScheduleDataInterface {
 
     }
     return $data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNotFreeHours(int $group, string $day) {
+    $hours = [];
+    $query = $this->storage()->getQuery();
+    $query->condition('status', 1)
+      ->condition('group_id', $group)
+      ->condition('date', $day)
+      ->notExists('subgroup');
+
+    $eids = $query->execute();
+
+
+    $items = $this->storage()->loadMultiple($eids);
+    dpm($items, 'eids');
+  }
+
+  /**
+   * Event storage.
+   *
+   * @return \Drupal\Core\Entity\EntityStorageInterface
+   *   Event storage.
+   */
+  private function storage() {
+    if (empty($this->storage)) {
+      try {
+        /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
+        $this->storage = $this->entityTypeManager->getStorage('schedule_event');
+      }
+      catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
+        $this->logger->error($e->getMessage());
+      }
+    }
+    return $this->storage;
   }
 
 }

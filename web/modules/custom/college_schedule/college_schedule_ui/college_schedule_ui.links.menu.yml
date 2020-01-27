@@ -1,0 +1,6 @@
+# Admin root item
+college_schedule_ui.dashboard:
+  title: 'College schedule UI'
+  parent: college_schedule.toolbar
+  route_name: college_schedule_ui.dashboard
+  weight: -50

@@ -6,8 +6,6 @@ dependencies:
     - college_schedule.schedule_event_type.training
     - field.field.schedule_event.training.date
     - field.field.schedule_event.training.discipline
-    - field.field.schedule_event.training.group
-    - field.field.schedule_event.training.hour
     - field.field.schedule_event.training.location
     - field.field.schedule_event.training.note
     - field.field.schedule_event.training.subgroup
@@ -31,19 +29,30 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  group:
-    weight: 8
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
+  group_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
     region: content
+    third_party_settings: {  }
   hour:
-    weight: 4
+    type: number
+    weight: -2
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
+  hour_id:
     type: number
+    weight: -2
     region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 2

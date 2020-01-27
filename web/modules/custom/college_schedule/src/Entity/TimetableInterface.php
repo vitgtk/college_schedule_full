@@ -28,4 +28,14 @@ interface TimetableInterface extends ConfigEntityInterface {
    */
   public function duration($last = 15);
 
+  /**
+   * Hour length.
+   *
+   * @param int $hourId
+   *   Hour ID.
+   *
+   * @return string|null
+   */
+  public function hourDuration($hourId);
+
 }

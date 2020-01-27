@@ -1,0 +1,4 @@
+use schedule dashboard form:
+  title: 'Use schedule dashboard form'
+  description: 'Use schedule dashboard form.'
+  restrict access: true

@@ -1,17 +1,20 @@
-college_schedule_ui.college_schedule_dashboard:
+college_schedule_ui.dashboard:
   path: '/college-schedule/dashboard'
   defaults:
     _form: '\Drupal\college_schedule_ui\Form\DashboardForm'
     _title: 'Dashboard Form'
   requirements:
-    _access: 'TRUE'
+    _permission: 'use schedule dashboard form'
+
 college_schedule_ui.events_form:
-  path: '/college_schedule_ui/form/events/{group}/{day}'
+  path: '/college_schedule_ui/form/events/{group}/{day}/{hour}'
   defaults:
     _form: '\Drupal\college_schedule_ui\Form\EventsForm'
     _title: 'EventsForm'
+    hour: NULL
   requirements:
-    _access: 'TRUE'
+    _permission: 'use schedule dashboard form'
+    hour: '[0-9]+'
   options:
     parameters:
       day:
@@ -23,6 +26,6 @@ college_schedule_ui.dashboard_controller_hello:
   path: '/college_schedule_ui/hello/{name}'
   defaults:
     _controller: '\Drupal\college_schedule_ui\Controller\DashboardController::hello'
-    _title: 'demo'
+    _title: 'Test controller'
   requirements:
-    _permission: 'access content'
+    _permission: 'view college schedule'

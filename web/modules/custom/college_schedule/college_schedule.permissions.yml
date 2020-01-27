@@ -1,3 +1,6 @@
+view college schedule:
+  title: 'View college schedule'
+
 add teacher entities:
   title: 'Create new Teacher entities'
 

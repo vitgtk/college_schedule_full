@@ -5,8 +5,6 @@ dependencies:
   config:
     - college_schedule.schedule_event_type.lunch
     - field.field.schedule_event.lunch.date
-    - field.field.schedule_event.lunch.group
-    - field.field.schedule_event.lunch.hour
   module:
     - datetime
 id: schedule_event.lunch.default
@@ -20,23 +18,30 @@ content:
     third_party_settings: {  }
     type: datetime_default
     region: content
-  group:
+  group_id:
+    type: entity_reference_autocomplete
     weight: 5
     settings:
       match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
+      match_limit: 10
     region: content
+    third_party_settings: {  }
   hour:
-    weight: 4
+    type: number
+    weight: -2
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
+  hour_id:
     type: number
+    weight: -2
     region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 2

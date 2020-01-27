@@ -21,6 +21,7 @@ class EventListBuilder extends EntityListBuilder {
     $header['name'] = $this->t('Name');
     $header['date'] = $this->t('Date');
     $header['hour'] = $this->t('Hour');
+    $header['group'] = $this->t('Group');
     return $header + parent::buildHeader();
   }
 
@@ -37,6 +38,7 @@ class EventListBuilder extends EntityListBuilder {
     );
     $row['date'] = $entity->get('date')->value;
     $row['hour'] = $entity->get('hour')->value;
+    $row['group'] = !$entity->get('group_id')->isEmpty() ? $entity->get('group_id')->entity->label() : '';
     return $row + parent::buildRow($entity);
   }
 

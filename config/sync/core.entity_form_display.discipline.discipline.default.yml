@@ -3,6 +3,7 @@ langcode: ru
 status: true
 dependencies:
   config:
+    - field.field.discipline.discipline.full_name
     - field.field.discipline.discipline.teachers
   module:
     - college_schedule
@@ -11,23 +12,31 @@ targetEntityType: discipline
 bundle: discipline
 mode: default
 content:
+  full_name:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   langcode:
     type: language_select
-    weight: 2
+    weight: 3
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: -4
+    weight: 0
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   teachers:
-    weight: 3
+    weight: 2
     settings:
       match_operator: CONTAINS
       match_limit: 10

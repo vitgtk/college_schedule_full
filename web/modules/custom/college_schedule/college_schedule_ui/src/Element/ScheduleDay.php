@@ -25,7 +25,7 @@ use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
  * @code
  * $build['awesome'] = [
  *   '#type' => 'schedule_event',
- *   '#content' => 'Whoa cools, a marquee!',
+ *   '#items' => [],
  * ];
  * @endcode
  *
@@ -44,10 +44,6 @@ class ScheduleDay extends RenderElement {
    */
   public function getInfo() {
 
-    // Returns an array of default properties that will be merged with any
-    // properties defined in a render array when using this element type.
-    // You can use any standard render array property here, and you can also
-    // custom properties that are specific to your new element type.
     return [
       // See render_example_theme() where this new theme hook is declared.
       '#theme' => 'schedule_day_element',
@@ -56,14 +52,12 @@ class ScheduleDay extends RenderElement {
       '#pre_render' => [
         [self::class, 'preRenderScheduleDay'],
       ],
-      // This is a custom property for our element type. We set it to blank by
-      // default. The expectation is that a user will add the content that they
-      // would like to see inside the marquee tag. This custom property is
-      // accounted for in the associated template file.
-      '#content' => '', /* remove */
+      '#items' => '',
+      '#max_row' => 8,
+      '#timetable' => NULL,
       '#empty' => '',
       '#date' => NULL,
-      '#items' => NULL,
+      '#hours' => NULL,
       '#attributes' => [
         'class' => [
           'schedule-day-item',
@@ -85,77 +79,38 @@ class ScheduleDay extends RenderElement {
    *   context.
    */
   public static function preRenderScheduleDay(array $element) {
-
-    if (!isset($element['#id'])) {
-      // $element['#id'] = Html::getUniqueId(implode('-', $element['#parents']) . '-wrapper');
-    }
-    $itemsByHour = $element['#items'];
-    $items = [];
-
-    if (!empty($itemsByHour)) {
-      $hours = array_keys($itemsByHour);
+    /** @var \Drupal\college_schedule\Entity\TimetableInterface $timetable */
+    $timetable = $element['#timetable'];
+    if (!empty($element['#items'])) {
+      $hours = array_keys($element['#items']);
       $lastHour = max($hours);
-      for ($i = 1; $i < $lastHour; $i++) {
-        if (!isset($itemsByHour[$i])) {
-          $itemsByHour[$i] = [];
+
+      $lastLine = ($element['#max_row'] > $lastHour) ? $element['#max_row'] : $lastHour;
+      for ($i = 1; $i <= $lastLine; $i++) {
+        if (!isset($element['#items'][$i])) {
+          $element['#items'][$i] = [];
         }
       }
-      ksort($itemsByHour);
-      foreach ($itemsByHour as $hour => $events) {
-        $entry = [];
-        $entry['hour_id'] = $hour;
-        $entry['time'] = 'time:' . $hour;
-        $entry['entities'] = $events;
-
-        $list = [];
-        $event_type = '';
-
-        if (empty($events)) {
-          $event_type = 'empty-hour';
-        }
-        foreach ($events as $event) {
-          /** @var  \Drupal\college_schedule\Entity\Event $event */
-          $listItem = [
-            'event_id' => $event->id(),
-            'label' => $event->label(),
-            'type' => $event->bundle(),
-          ];
-          $event_type = $event->bundle();
-          if ($event->bundle() == 'training') {
-            $listItem['place'] = $event->get('location')->entity->label();
-            $listItem['location'] = $event->get('location')->entity->label();
-            $listItem['label'] = $event->get('discipline')->entity->label();
-            $listItem['subgroup'] = $event->get('subgroup')->value;
-          }
-          $list[] = $listItem;
-        }
-        $entry['events'] = $list;
-        $entry['type'] = $event_type;
-        $items[] = $entry;
+      ksort($element['#items']);
+      $weight = 0;
+      $element['#hours'] = [];
+      foreach ($element['#items'] as $hour => $events) {
+        $weight += 0.001;
+        $element['#hours'] += [
+          $hour => [],
+        ];
+        $element['#hours'][$hour] += [
+          '#type' => 'schedule_hour',
+          '#items' => $events,
+          '#times' => $timetable->hourDuration($hour),
+          '#hour_id' => $hour,
+          '#weight' => $weight,
+        ];
       }
     }
-    else {
-      $entry = [];
-      $entry['hour_id'] = 0;
-      $entry['time'] = 'time:' . 0;
-      $entry['events'] = [];
-      $items[] = $entry;
-    }
-
-    $element['#hours'] = $items;
-
-    //dpm($element, 'element');
-    $date_storage = $element['#date'];
-    $date = DrupalDateTime::createFromFormat(DateTimeItemInterface::DATE_STORAGE_FORMAT, $date_storage);
 
     $element['#attributes']['data-schedule-day'] = $element['#date'];
 
-
-    // hour_id.
-    // is_empty.
-    // events.
-    // time.
-    // dpm($element, 'element build');
     return $element;
   }
 

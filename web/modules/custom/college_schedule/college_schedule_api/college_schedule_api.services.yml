@@ -7,4 +7,7 @@ services:
     arguments: ['@config.factory', '@cache.default', '@entity_type.manager', '@logger.channel.college_schedule_api']
   college_schedule_api.calendar:
     class: Drupal\college_schedule_api\Calendar
-    arguments: ['@entity_type.manager', '@config.factory']
+    arguments: ['@entity_type.manager', '@config.factory', '@logger.channel.college_schedule_api']
+  college_schedule_api.editor:
+    class: Drupal\college_schedule_api\Editor
+    arguments: ['@entity_type.manager', '@config.factory', '@tempstore.private', '@logger.channel.college_schedule_api']

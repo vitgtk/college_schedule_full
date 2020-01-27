@@ -22,4 +22,12 @@ interface ScheduleDataInterface {
    */
   public function load(int $group, string $week, $saturday = FALSE);
 
+  /**
+   * @param int $group
+   * @param string $day
+   *
+   * @return mixed
+   */
+  public function getNotFreeHours(int $group, string $day);
+
 }

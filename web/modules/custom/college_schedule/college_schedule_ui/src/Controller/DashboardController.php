@@ -2,6 +2,7 @@
 
 namespace Drupal\college_schedule_ui\Controller;
 
+use Drupal\college_schedule\Entity\Event;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Controller\ControllerBase;
@@ -20,21 +21,21 @@ class DashboardController extends ControllerBase {
    */
   public function hello($name) {
     $build['#attached']['library'][] = 'core/drupal.dialog.ajax';
-    $build['open_modal'] = [
-      '#type' => 'link',
-      '#title' => new FormattableMarkup('Open node @nid in modal!', ['@nid' => 1]),
-      '#url' => Url::fromRoute('college_schedule_ui.events_form'),
-      '#options' => [
-        'attributes' => [
-          'class' => ['use-ajax'],
-          'data-dialog-type' => 'modal',
-          'data-dialog-options' => Json::encode([
-            'width' => 700,
-          ]),
-        ],
-      ],
-      '#attached' => ['library' => ['core/drupal.dialog.ajax']],
+
+
+    $events = Event::loadMultiple();
+
+    foreach ($events as $id => $event) {
+      $event->set('group_id', 1);
+      $event->save();
+    }
+
+    $build['m'] = [
+      '#markup' => '3',
     ];
+
+
+    dpm($build);
     return $build;
   }
 

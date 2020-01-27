@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: schedule
+label: 'College schedule menu'
+description: schedule
+locked: true

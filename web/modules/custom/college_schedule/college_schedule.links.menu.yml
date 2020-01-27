@@ -1,8 +1,20 @@
+college_schedule.toolbar:
+  title: 'College schedule'
+  menu_name: schedule
+  route_name: college_schedule.toolbar
+  weight: 10
 # Admin section
 college_schedule.config:
   title: 'College schedule'
   parent: system.admin_config
   route_name: college_schedule.config
+  weight: -50
+
+# Structure
+college_schedule.structure:
+  title: 'College schedule structure'
+  parent: college_schedule.config
+  route_name: college_schedule.structure
   weight: -50
 
 # Timetable menu items definition
@@ -25,7 +37,7 @@ teacher.admin.structure.settings:
   title: 'Teacher settings'
   description: 'Configure Teacher entities'
   route_name: teacher.settings
-  parent: college_schedule.config
+  parent: college_schedule.structure
 
 # Discipline menu items definition
 entity.discipline.collection:
@@ -39,14 +51,14 @@ discipline.admin.structure.settings:
   title: 'Discipline settings'
   description: 'Configure Discipline entities'
   route_name: discipline.settings
-  parent: college_schedule.config
+  parent: college_schedule.structure
 
 # Event menu items definition
 entity.schedule_event.collection:
   title: 'Event list'
   route_name: entity.schedule_event.collection
   description: 'List Event entities'
-  parent: system.admin_structure
+  parent: college_schedule.config
   weight: 100
 
 
@@ -55,7 +67,7 @@ entity.schedule_event_type.collection:
   title: 'Event type'
   route_name: entity.schedule_event_type.collection
   description: 'List Event type (bundles)'
-  parent: system.admin_structure
+  parent: college_schedule.config
   weight: 99
 
 # Location menu items definition
@@ -63,39 +75,39 @@ entity.event_location.collection:
   title: 'Location list'
   route_name: entity.event_location.collection
   description: 'List Location entities'
-  parent: system.admin_structure
+  parent: college_schedule.config
   weight: 100
 
 event_location.admin.structure.settings:
   title: 'Location settings'
   description: 'Configure Location entities'
   route_name: event_location.settings
-  parent: system.admin_structure
+  parent: college_schedule.structure
 
 # Group program menu items definition
 entity.group_program.collection:
   title: 'Group program list'
   route_name: entity.group_program.collection
   description: 'List Group program entities'
-  parent: system.admin_structure
+  parent: college_schedule.config
   weight: 100
 
 group_program.admin.structure.settings:
   title: 'Group program settings'
   description: 'Configure Group program entities'
   route_name: group_program.settings
-  parent: system.admin_structure
+  parent: college_schedule.structure
 
 # Student group menu items definition
 entity.student_group.collection:
   title: 'Student group list'
   route_name: entity.student_group.collection
   description: 'List Student group entities'
-  parent: system.admin_structure
+  parent: college_schedule.config
   weight: 100
 
 student_group.admin.structure.settings:
   title: 'Student group settings'
   description: 'Configure Student group entities'
   route_name: student_group.settings
-  parent: system.admin_structure
+  parent: college_schedule.structure

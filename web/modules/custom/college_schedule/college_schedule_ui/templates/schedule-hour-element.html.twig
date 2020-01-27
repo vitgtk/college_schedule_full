@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the marquee render element.
+ *
+ * Available variables:
+ * - attributes: Attributes for the marguee tag.
+ * - content: The text to display within the marquee tag.
+ *
+ * @ingroup themeable
+ * @ingroup render_example
+ */
+#}
+
+<div{{ attributes }}>
+  <div class="cs-board--hour-header">
+
+    <div class="hour-header-content">
+      <div class="hour-id">{{ hour_id }}.</div>
+      <div class="time"><span> {{ times }}</span></div>
+    </div>
+    <div class="handle"><i class="handle-i cursor-pointer"></i></div>
+  </div>
+  {% if not is_empty %}
+    <div class="cs-board--hour-events">
+      {{ events }}
+    </div>
+  {% endif %}
+</div>

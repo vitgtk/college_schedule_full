@@ -4,6 +4,7 @@ namespace Drupal\college_schedule_api;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Calendar.
@@ -25,11 +26,19 @@ class Calendar implements ScheduleCalendarInterface {
   protected $configFactory;
 
   /**
+   * A logger instance.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
    * Constructs a new Calendar object.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory, LoggerInterface $logger) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
+    $this->logger = $logger;
   }
 
   public function getTimetable($day = NULL) {

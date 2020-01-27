@@ -98,7 +98,7 @@ class Discipline extends ContentEntityBase implements DisciplineInterface {
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Discipline entity.'))
+      ->setDescription(t('The short name of the discipline.'))
       ->setSettings([
         'max_length' => 250,
         'text_processing' => 0,
