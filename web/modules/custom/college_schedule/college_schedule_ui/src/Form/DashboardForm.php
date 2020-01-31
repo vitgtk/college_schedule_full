@@ -123,6 +123,15 @@ class DashboardForm extends FormBase {
         'callback' => '::saveCallback',
       ],
     ];
+    $form['select_container']['actions']['lunch'] = [
+      '#type' => 'submit',
+      '#name' => 'lunch',
+      '#value' => $this->t('Add lunch'),
+      '#button_type' => 'primary',
+      '#ajax' => [
+        'callback' => '::lunchCallback',
+      ],
+    ];
 
     /* Not used */
     $form['select_container']['actions']['add_container'] = [
@@ -191,6 +200,25 @@ class DashboardForm extends FormBase {
    *   Form state object.
    */
   public function saveCallback(array &$form, FormStateInterface $form_state) {}
+
+  /**
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public function lunchCallback(array &$form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+
+    $group_program = (int) $form_state->getValue('group_program');
+    $week = $form_state->getValue('week');
+    $saturday = (bool) $form_state->getValue('saturday');
+    /** @var \Drupal\college_schedule_api\EditorInterface $editor */
+    $editor = \Drupal::service('college_schedule_api.editor');
+
+    $editor->addLunch($group_program, $week);
+    $build = $this->scheduleBuilder->build($group_program, $week, $saturday);
+
+    $response->addCommand(new HtmlCommand('.cs-board-js--schedule-area', $build));
+  }
 
   /**
    * Helper function.

@@ -1,0 +1,9 @@
+uuid: 19dbc094-0d9c-4e82-92dc-6a968962ad8a
+langcode: ru
+status: true
+dependencies: {  }
+id: dispatcher
+label: Dispatcher
+weight: 2
+is_admin: null
+permissions: {  }

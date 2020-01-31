@@ -20,4 +20,6 @@ interface EditorInterface {
    */
   public function save(EventInterface $event);
 
+  public function addLunch(int $group_program, string $week);
+
 }

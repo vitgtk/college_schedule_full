@@ -133,14 +133,9 @@ class Event extends ContentEntityBase implements EventInterface {
       ->setSetting('target_type', 'group_program')
       ->setSetting('handler', 'default')
       ->setDisplayOptions('form', [
-        'type'     => 'entity_reference_autocomplete',
+        'type'     => 'options_select',
         'weight'   => 5,
-        'settings' => [
-          'match_operator'    => 'CONTAINS',
-          'size'              => '60',
-          'autocomplete_type' => 'tags',
-          'placeholder'       => '',
-        ],
+        'settings' => [],
       ])
       ->setCardinality(1)
       ->setDisplayConfigurable('form', TRUE)

@@ -30,13 +30,9 @@ content:
     type: options_select
     region: content
   group_id:
-    type: entity_reference_autocomplete
+    type: options_select
     weight: 5
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-      match_limit: 10
+    settings: {  }
     region: content
     third_party_settings: {  }
   hour:

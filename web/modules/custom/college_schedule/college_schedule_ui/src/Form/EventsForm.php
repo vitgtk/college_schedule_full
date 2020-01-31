@@ -2,15 +2,14 @@
 
 namespace Drupal\college_schedule_ui\Form;
 
+use Drupal\college_schedule\Entity\DisciplineInterface;
 use Drupal\college_schedule\Entity\GroupProgramInterface;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\AlertCommand;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
-use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -92,60 +91,57 @@ class EventsForm extends FormBase {
     $form['#prefix'] = '<div id="modal_events_form">';
     $form['#suffix'] = '</div>';
 
-    dpm($hour, 'hour');
+    $is_all = (bool) $form_state->getValue('all_options');
+    $discipline_default = $form_state->getValue('default') ?? NULL;
     $form['#title'] = $this->t('Group @group, schedule @date', [
       '@group' => $group->label(),
       '@date' => $this->dateFormatter->format($day->getTimestamp()),
     ]);
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $form['#attached']['library'][] = 'college_schedule_ui/form';
+
     $form['event'] = [
       '#type' => 'container',
-      '#tree' => TRUE,
+     // '#tree' => TRUE,
+      '#attributes' => [
+        'class' => 'schedule-form-inline',
+      ],
     ];
-    $form['event']['group'] = [
+    $form['event']['group_id'] = [
       '#type' => 'hidden',
       '#value' => $group->id(),
-      '#weight' => 9,
+      '#weight' => -10,
     ];
     $form['event']['date'] = [
       '#type' => 'hidden',
       '#value' => $day->format(DateTimeItemInterface::DATE_STORAGE_FORMAT),
-      '#weight' => 9,
+      '#weight' => -10,
     ];
-    $form['discipline_teacher'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => 'schedule-form-inline',
-      ],
-    ];
-    $form['subgroup_location'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => 'schedule-form-inline',
-      ],
-    ];
-    $form['discipline_teacher']['discipline'] = [
+    $form['event']['discipline'] = [
       '#type' => 'select',
       '#title' => $this->t('Discipline'),
       '#description' => $this->t('Discipline'),
       '#options' => $this->disciplineOptions($group),
-      '#default_value' => NULL,
+      '#default_value' => $discipline_default,
       '#required' => TRUE,
       '#weight' => 1,
+      '#ajax' => [
+        'event' => 'change',
+        'callback' => '::reloadCallback',
+      ],
     ];
     $discipline_id = NULL;
-    $form['discipline_teacher']['teacher'] = [
+    $form['event']['teacher'] = [
       '#type' => 'select',
       '#title' => $this->t('Teacher'),
-      '#options' => $this->teacherOptions($discipline_id),
+      '#options' => $this->teacherOptions($is_all, $discipline_default),
       '#default_value' => NULL,
       '#description' => $this->t('Discipline'),
       '#required' => TRUE,
       '#weight' => 2,
     ];
     /* subgroup */
-    $form['subgroup_location']['subgroup'] = [
+    $form['event']['subgroup'] = [
       '#type' => 'select',
       '#title' => $this->t('Subgroup'),
       '#empty_option' => $this->t('- All -'),
@@ -157,11 +153,11 @@ class EventsForm extends FormBase {
       '#weight' => 4,
     ];
 
-    $form['subgroup_location']['location'] = [
+    $form['event']['location'] = [
       '#type' => 'select',
       '#title' => $this->t('Location'),
       '#description' => $this->t('Location'),
-      '#options' => $this->locationOptions($discipline_id),
+      '#options' => $this->locationOptions($is_all, $discipline_id),
       '#default_value' => NULL,
       '#required' => TRUE,
       '#weight' => 4,
@@ -171,7 +167,7 @@ class EventsForm extends FormBase {
     $data->getNotFreeHours($group->id(), $day->format(DATETIME_DATE_STORAGE_FORMAT));
 
     $default_hours = ($hour === NULL) ? NULL : $hour;
-    $form['subgroup_location']['hours'] = [
+    $form['event']['hours'] = [
       '#type' => 'select',
       '#title' => $this->t('Hours'),
       '#multiple' => TRUE,
@@ -180,9 +176,20 @@ class EventsForm extends FormBase {
       '#description' => $this->t('Hours'),
       '#required' => TRUE,
       '#weight' => 5,
+      '#size' => 2,
     ];
 
-
+    $form['all_options'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('All options'),
+      '#description' => $this->t('All options to choose'),
+      '#default_value' => FALSE,
+      '#weight' => 9,
+      '#ajax' => [
+        'event' => 'change',
+        'callback' => '::reloadCallback',
+      ],
+    ];
     $form['actions']['#type'] = 'actions';
     $form['actions']['#weight'] = 10;
     $form['actions']['save'] = [
@@ -214,6 +221,26 @@ class EventsForm extends FormBase {
   }
 
   /**
+   * Reload callback.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   */
+  public function reloadCallback(array &$form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+    $is_all = (bool) $form_state->getValue('all_options');
+    $discipline = $form_state->getValue('discipline');
+
+    $form['event']['teacher']['#options'] = $this->teacherOptions($is_all, $discipline);
+    $form['event']['location']['#options'] = $this->locationOptions($is_all, $discipline);
+
+    $response->addCommand(new ReplaceCommand('#modal_events_form', $form));
+    return $response;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {}
@@ -233,8 +260,12 @@ class EventsForm extends FormBase {
       $response->addCommand(new ReplaceCommand('#modal_events_form', $form));
     }
     else {
-      $entry = $form_state->getValue('event');
-      $group_id = $entry['group'];
+
+      $group_id = $form_state->getValue('group_id');
+      $entry = [
+        'group_id' => $group_id,
+        'date' => $form_state->getValue('date'),
+      ];
       $entry['type'] = 'training';
       $entry['discipline'] = $form_state->getValue('discipline');
       $entry['teacher'] = $form_state->getValue('teacher');
@@ -251,7 +282,6 @@ class EventsForm extends FormBase {
         $event->set('name', $form_state->getValue('discipline'));
         $event->save();
       }
-
 
       $monday = DrupalDateTime::createFromFormat(DateTimeItemInterface::DATE_STORAGE_FORMAT, $entry['date'])->modify('monday this week');
       $build = $this->scheduleBuilder->build((int) $group_id, $monday->format(DateTimeItemInterface::DATE_STORAGE_FORMAT));
@@ -288,14 +318,37 @@ class EventsForm extends FormBase {
   /**
    * Helper.
    *
+   * @param bool $is_all
    * @param int|NULL $discipline_id
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function subgroupOptions(int $discipline_id = NULL) {
+  private function teacherOptions(bool $is_all = FALSE, int $discipline_id = NULL) {
     $options = [];
-    $options['1'] = $this->t('@num subgroup', ['@num' => 1]);
-    $options['2'] = $this->t('@num subgroup', ['@num' => 2]);
+
+    if ($discipline_id) {
+      $discipline = $this->entityTypeManager->getStorage('discipline')->load($discipline_id);
+      $label = (string) $this->t('- Teachers of the discipline @discipline -', [
+        '@discipline' => $discipline->label(),
+      ]);
+      \Drupal::messenger()->addStatus($label);
+      if ($discipline instanceof DisciplineInterface && !$discipline->get('teachers')->isEmpty()) {
+        foreach ($discipline->get('teachers')->referencedEntities() as $item) {
+          $options[$label][$item->id()] = $item->label();
+        }
+      }
+    }
+
+    if ($is_all || !$discipline_id) {
+      $label = (string) $this->t('- All teachers -');
+      $storage = $this->entityTypeManager->getStorage('teacher');
+      foreach ($storage->loadMultiple() as $item) {
+        $options[$label][$item->id()] = $item->label();
+      }
+    }
+
     return $options;
   }
 
@@ -305,22 +358,55 @@ class EventsForm extends FormBase {
    * @param int|NULL $discipline_id
    *
    * @return array
+   */
+  private function subgroupOptions(int $discipline_id = NULL) {
+    $options = [];
+    $options['1'] = $this->t('@num subgroup', ['@num' => 1]);
+    $options['2'] = $this->t('@num subgroup', ['@num' => 2]);
+    return $options;
+  }
+
+  /**
+   * Helper.
+   *
+   * @param bool $is_all
+   * @param int|NULL $discipline_id
+   *
+   * @return array
    *   Options list.
    */
-  public function locationOptions(int $discipline_id = NULL) {
+  private function locationOptions(bool $is_all = FALSE, int $discipline_id = NULL) {
     $options = [];
-    try {
-      $storage = $this->entityTypeManager->getStorage('event_location');
+
+
+    if ($discipline_id) {
+      $discipline = $this->entityTypeManager->getStorage('discipline')->load($discipline_id);
+      $label = (string) $this->t('- Locations for the discipline @discipline -', [
+        '@discipline' => $discipline->label(),
+      ]);
+      if ($discipline instanceof DisciplineInterface && !$discipline->get('locations')->isEmpty()) {
+        foreach ($discipline->get('locations')->referencedEntities() as $item) {
+          $options[$label][$item->id()] = $item->label();
+        }
+      }
     }
-    catch (PluginNotFoundException $e) {
-      return $options;
+
+    if ($is_all || !$discipline_id) {
+      $label = (string) $this->t('- All locations -');
+      try {
+        $storage = $this->entityTypeManager->getStorage('event_location');
+      }
+      catch (PluginNotFoundException $e) {
+        return $options;
+      }
+      catch (InvalidPluginDefinitionException $e) {
+        return $options;
+      }
+      foreach ($storage->loadMultiple() as $item) {
+        $options[$label][$item->id()] = $item->label();
+      }
     }
-    catch (InvalidPluginDefinitionException $e) {
-      return $options;
-    }
-    foreach ($storage->loadMultiple() as $item) {
-      $options[$item->id()] = $item->label();
-    }
+
     return $options;
   }
 
@@ -337,24 +423,6 @@ class EventsForm extends FormBase {
     }
     unset($options['16']);
     unset($options['17']);
-    return $options;
-  }
-
-  /**
-   * Helper.
-   *
-   * @param int|NULL $discipline_id
-   *
-   * @return array
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   */
-  private function teacherOptions(int $discipline_id = NULL) {
-    $options = [];
-    $storage = $this->entityTypeManager->getStorage('teacher');
-    foreach ($storage->loadMultiple() as $item) {
-      $options[$item->id()] = $item->label();
-    }
     return $options;
   }
 

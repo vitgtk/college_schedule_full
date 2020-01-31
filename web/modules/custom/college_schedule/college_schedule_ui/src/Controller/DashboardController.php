@@ -25,11 +25,6 @@ class DashboardController extends ControllerBase {
 
     $events = Event::loadMultiple();
 
-    foreach ($events as $id => $event) {
-      $event->set('group_id', 1);
-      $event->save();
-    }
-
     $build['m'] = [
       '#markup' => '3',
     ];

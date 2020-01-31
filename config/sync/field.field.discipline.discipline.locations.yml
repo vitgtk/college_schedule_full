@@ -1,0 +1,22 @@
+uuid: 5896ae4c-cf9d-4028-b15e-8e5aae34b165
+langcode: ru
+status: true
+dependencies:
+  config:
+    - field.storage.discipline.locations
+  module:
+    - college_schedule
+id: discipline.discipline.locations
+field_name: locations
+entity_type: discipline
+bundle: discipline
+label: Locations
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:event_location'
+  handler_settings: {  }
+field_type: entity_reference
