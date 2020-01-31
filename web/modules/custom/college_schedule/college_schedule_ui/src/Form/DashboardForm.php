@@ -4,10 +4,11 @@ namespace Drupal\college_schedule_ui\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
-use Drupal\Core\Ajax\SettingsCommand;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -44,6 +45,13 @@ class DashboardForm extends FormBase {
   protected $dateFormatter;
 
   /**
+   * Drupal\college_schedule_ui\ScheduleBuilderInterface definition.
+   *
+   * @var \Drupal\college_schedule_ui\ScheduleBuilderInterface
+   */
+  protected $scheduleBuilder;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -51,6 +59,7 @@ class DashboardForm extends FormBase {
     $instance->configFactory = $container->get('config.factory');
     $instance->tempstorePrivate = $container->get('tempstore.private');
     $instance->dateFormatter = $container->get('date.formatter');
+    $instance->scheduleBuilder = $container->get('college_schedule_ui.builder');
     return $instance;
   }
 
@@ -66,19 +75,19 @@ class DashboardForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['#attached']['library'][] = 'college_schedule_ui/dashboard';
+    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
+
+    $form['#attributes']['class'][] = 'cs-board--dashboard';
+    /* Filter and buttons */
     $form['select_container'] = [
       '#type' => 'container',
       '#attributes' => [
-        'class' => ['container-inline'],
+        'class' => ['cs-board--controls', 'container-inline'],
       ],
     ];
     $form['select_container']['group_program'] = [
       '#type' => 'select',
-      '#options' => [
-        '1' => '12о',
-        '2' => '22о',
-        '3' => '32о',
-      ],
+      '#options' => $this->groupProgramOptions(),
       '#title' => $this->t('Group'),
       '#weight' => '0',
     ];
@@ -87,9 +96,9 @@ class DashboardForm extends FormBase {
       '#options' => $this->weekList(),
       '#title' => $this->t('Week'),
       '#weight' => '0',
-      '#default_value' => $this->monday()->format(self::WEEK_KEY_FORMAT),
+      '#default_value' => $this->monday()->format(DateTimeItemInterface::DATE_STORAGE_FORMAT),
     ];
-    // Saturday
+
     $form['select_container']['saturday'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Saturday'),
@@ -110,12 +119,34 @@ class DashboardForm extends FormBase {
       '#name' => 'save',
       '#value' => $this->t('Save'),
       '#button_type' => 'primary',
+      '#ajax' => [
+        'callback' => '::saveCallback',
+      ],
+    ];
+    $form['select_container']['actions']['lunch'] = [
+      '#type' => 'submit',
+      '#name' => 'lunch',
+      '#value' => $this->t('Add lunch'),
+      '#button_type' => 'primary',
+      '#ajax' => [
+        'callback' => '::lunchCallback',
+      ],
     ];
 
+    /* Not used */
+    $form['select_container']['actions']['add_container'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'id' => 'actions--add-container',
+        'class' => ['actions--add-container'],
+      ],
+    ];
+
+    /* Schedule area */
     $form['schedule_area'] = [
       '#type' => 'container',
       '#attributes' => [
-        'class' => ['schedule-area'],
+        'class' => ['cs-board-js--schedule-area', 'cs-board--schedule-area'],
       ],
     ];
 
@@ -135,11 +166,7 @@ class DashboardForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Display result.
-    $weekTimestamp = $form_state->getValue('week');
-    dpm($this->dateFormatter->format($weekTimestamp, 'custom', 'r'));
-  }
+  public function submitForm(array &$form, FormStateInterface $form_state) {}
 
   /**
    * Load callback function.
@@ -151,50 +178,15 @@ class DashboardForm extends FormBase {
    */
   public function loadCallback(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
-    $group_program = $form_state->getValue('group_program');
+
+    $group_program = (int) $form_state->getValue('group_program');
     $week = $form_state->getValue('week');
-    $saturday = $form_state->getValue('saturday');
-    $data = $this->loadSchedule($group_program, $week, $saturday);
-    $response->addCommand(new SettingsCommand(['college_schedule' => $data]));
 
-    $date = DrupalDateTime::createFromTimestamp($week);
-    $build['content'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'id' => 'schedule-area' . $week,
-        'data-week' => $date->format(DateTimeItemInterface::DATE_STORAGE_FORMAT),
-        'data-group' => $group_program,
-        'data-saturday' => $saturday,
-        'class' => ['schedule-area-days'],
-      ],
-    ];
-    if ($saturday) {
-      $build['content']['#attributes']['class'][] = 'schedule-area-days--saturday-on';
-    }
+    $saturday = (bool) $form_state->getValue('saturday');
 
-    $items = [];
-    for ($i = 1; $i < 16; $i++) {
-      $items[] = [
-        'event_id' => 0,
-        'label' => 'Empty',
-        'day_id' => $i,
-        'time' => '08:00-08:45',
-      ];
-    }
-    //dpm($items);
-    // data-schedule-event-number schedule-event-item
-    foreach ($data as $date_storage => $item) {
+    $build = $this->scheduleBuilder->build($group_program, $week, $saturday);
 
-      $element_key = 'day' . $date_storage;
-      $build['content'][$element_key] = [
-        '#type' => 'schedule_day',
-        '#content' => $date_storage,
-        '#date' => $date_storage,
-        '#items' => $items,
-      ];
-    }
-
-    $response->addCommand(new HtmlCommand('.schedule-area', $build));
+    $response->addCommand(new HtmlCommand('.cs-board-js--schedule-area', $build));
 
     return $response;
   }
@@ -209,43 +201,48 @@ class DashboardForm extends FormBase {
    */
   public function saveCallback(array &$form, FormStateInterface $form_state) {}
 
-
   /**
-   * Get schedule data.
-   *
-   * @param $group_program
-   * @param $week
-   * @param bool $saturday
-   *
-   * @return array
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
-  private function loadSchedule($group_program, $week, $saturday = FALSE) {
-    $count = $saturday ? 6 : 5;
-    $data = [];
-    $date = DrupalDateTime::createFromTimestamp($week);
-    for ($i = 0; $i < $count; $i++) {
-      $key = $date->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
-      $data[$key] = $date->format('r');
-      $date->modify('+ 24 hours');
-    }
-    return $data;
+  public function lunchCallback(array &$form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+
+    $group_program = (int) $form_state->getValue('group_program');
+    $week = $form_state->getValue('week');
+    $saturday = (bool) $form_state->getValue('saturday');
+    /** @var \Drupal\college_schedule_api\EditorInterface $editor */
+    $editor = \Drupal::service('college_schedule_api.editor');
+
+    $editor->addLunch($group_program, $week);
+    $build = $this->scheduleBuilder->build($group_program, $week, $saturday);
+
+    $response->addCommand(new HtmlCommand('.cs-board-js--schedule-area', $build));
   }
 
   /**
    * Helper function.
    *
+   * @param int $recurrences
+   *   Count recurrences.
+   *
    * @return array
    *   Options list.
    */
-  private function weekList() {
+  private function weekList(int $recurrences = 10) {
     $options = [];
-    $date = $this->monday();
-    $date->modify('- 1 week');
-
-    for ($i = 1; $i < 6; $i++) {
-      $key = $date->format(self::WEEK_KEY_FORMAT);
-      $options[$key] = $this->dateFormatter->format($date->format('U'), 'college_schedule_ui');
-      $date->modify('+ 1 week');
+    try {
+      $startMonday = new \DateTime('Monday noon this week');
+      $startMonday->modify('-1 week');
+      $interval = new \DateInterval('P7D');
+      $weeks = new \DatePeriod($startMonday, $interval, $recurrences);
+      foreach ($weeks as $week) {
+        $key = $week->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+        $options[$key] = $this->dateFormatter->format($week->format('U'), 'college_schedule_ui');
+      }
+    }
+    catch (\Exception $e) {
+      $this->logger('college_schedule_ui')->warning($e->getMessage());
     }
     return $options;
   }
@@ -257,7 +254,35 @@ class DashboardForm extends FormBase {
    *   Monday
    */
   private function monday() {
-    return new DrupalDateTime('Monday noon -1 week');
+    return new DrupalDateTime('Monday noon this week');
+  }
+
+  private function groupProgramOptions() {
+    $departmentStorage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    $departments = $departmentStorage->loadByProperties(['vid' => 'department']);
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
+    $storage = \Drupal::entityTypeManager()->getStorage('group_program');
+    $options = [];
+    $items = $storage->loadMultiple();
+
+
+    foreach ($items as $id => $group_program) {
+      $options[$id] = $group_program->label();
+    }
+
+    $group_options = [];
+    foreach ($departments as $department) {
+      if ($groups = $storage->loadByProperties(['department' => $department->id()])) {
+        $options = [];
+        foreach ($groups as $id => $group_program) {
+          $options[$id] = $group_program->label();
+        }
+        $group_options[$department->label()] = $options;
+      }
+
+    }
+
+    return $group_options;
   }
 
 }

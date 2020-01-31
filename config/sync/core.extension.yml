@@ -1,10 +1,15 @@
 module:
   admin_toolbar: 0
   admin_toolbar_tools: 0
+  automated_cron: 0
+  big_pipe: 0
   block: 0
+  block_content: 0
   breakpoint: 0
   college_schedule: 0
+  college_schedule_api: 0
   college_schedule_ui: 0
+  college_schedule_vitgtk: 0
   config: 0
   config_inspector: 0
   config_translation: 0
@@ -21,23 +26,34 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  help: 0
+  image: 0
+  inline_form_errors: 0
+  jquery_ui: 0
+  jquery_ui_sortable: 0
   jsonapi: 0
+  kint: 0
   language: 0
   layout_discovery: 0
+  link: 0
   locale: 0
+  menu_link_content: 0
+  menu_ui: 0
   node: 0
   options: 0
-  page_cache: 0
   page_manager: 0
+  path: 0
   path_alias: 0
   serialization: 0
   system: 0
+  taxonomy: 0
   text: 0
   token: 0
   toolbar: 0
   tour: 0
   update: 0
   user: 0
+  views_ui: 0
   views: 10
   minimal: 1000
 theme:
@@ -49,3 +65,4 @@ theme:
 profile: minimal
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
+langcode: ru

@@ -1,0 +1,49 @@
+uuid: a80f360e-7dc7-4b74-9be2-3150036a63f5
+langcode: ru
+status: true
+dependencies:
+  config:
+    - field.field.discipline.discipline.full_name
+    - field.field.discipline.discipline.locations
+    - field.field.discipline.discipline.teachers
+  module:
+    - college_schedule
+id: discipline.discipline.default
+targetEntityType: discipline
+bundle: discipline
+mode: default
+content:
+  full_name:
+    weight: -2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  locations:
+    weight: -1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  name:
+    label: hidden
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  teachers:
+    weight: -3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
+  langcode: true

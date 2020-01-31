@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_help().
@@ -55,4 +57,46 @@ function college_schedule_theme_suggestions_schedule_event(array $variables) {
   $suggestions[] = 'schedule_event__' . $entity->id();
   $suggestions[] = 'schedule_event__' . $entity->id() . '__' . $sanitized_view_mode;
   return $suggestions;
+}
+
+function college_schedule_toolbar() {
+
+
+  $menu_tree = \Drupal::service('toolbar.menu_tree');
+  $parameters = new MenuTreeParameters();
+  $parameters->setRoot('college_schedule.toolbar')->excludeRoot()->setMaxDepth(4)->onlyEnabledLinks();
+  $tree = $menu_tree->load(NULL, $parameters);
+  $manipulators = [
+    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+    ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ['callable' => 'toolbar_tools_menu_navigation_links'],
+  ];
+  $tree = $menu_tree->transform($tree, $manipulators);
+
+  $items['dashboard'] = [
+    '#type' => 'toolbar_item',
+    'tab' => [
+      '#type' => 'link',
+      '#title' => t('Schedule'),
+      '#url' => Url::fromRoute('college_schedule.toolbar'),
+      '#options' => [
+        'attributes' => [
+          'class' => ['toolbar-item', 'trigger', 'toolbar-icon', 'toolbar-icon-schedule-dashboard'],
+        ],
+      ],
+    ],
+    'tray' => $menu_tree->build($tree),
+    '#weight' => -2,
+    '#attached' => [
+     // 'library' => ['braslavskie_ltd/toolbar'],
+    ],
+  ];
+  return $items;
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function college_schedule_views_data_alter(array &$data) {
+  //dpm($data);
 }

@@ -25,7 +25,7 @@ use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
  * @code
  * $build['awesome'] = [
  *   '#type' => 'schedule_event',
- *   '#content' => 'Whoa cools, a marquee!',
+ *   '#items' => [],
  * ];
  * @endcode
  *
@@ -44,10 +44,6 @@ class ScheduleDay extends RenderElement {
    */
   public function getInfo() {
 
-    // Returns an array of default properties that will be merged with any
-    // properties defined in a render array when using this element type.
-    // You can use any standard render array property here, and you can also
-    // custom properties that are specific to your new element type.
     return [
       // See render_example_theme() where this new theme hook is declared.
       '#theme' => 'schedule_day_element',
@@ -56,13 +52,12 @@ class ScheduleDay extends RenderElement {
       '#pre_render' => [
         [self::class, 'preRenderScheduleDay'],
       ],
-      // This is a custom property for our element type. We set it to blank by
-      // default. The expectation is that a user will add the content that they
-      // would like to see inside the marquee tag. This custom property is
-      // accounted for in the associated template file.
-      '#content' => '',
+      '#items' => '',
+      '#max_row' => 8,
+      '#timetable' => NULL,
+      '#empty' => '',
       '#date' => NULL,
-      '#items' => NULL,
+      '#hours' => NULL,
       '#attributes' => [
         'class' => [
           'schedule-day-item',
@@ -84,23 +79,38 @@ class ScheduleDay extends RenderElement {
    *   context.
    */
   public static function preRenderScheduleDay(array $element) {
+    /** @var \Drupal\college_schedule\Entity\TimetableInterface $timetable */
+    $timetable = $element['#timetable'];
+    if (!empty($element['#items'])) {
+      $hours = array_keys($element['#items']);
+      $lastHour = max($hours);
 
-    if (!isset($element['#id'])) {
-      $element['#id'] = Html::getUniqueId(implode('-', $element['#parents']) . '-wrapper');
+      $lastLine = ($element['#max_row'] > $lastHour) ? $element['#max_row'] : $lastHour;
+      for ($i = 1; $i <= $lastLine; $i++) {
+        if (!isset($element['#items'][$i])) {
+          $element['#items'][$i] = [];
+        }
+      }
+      ksort($element['#items']);
+      $weight = 0;
+      $element['#hours'] = [];
+      foreach ($element['#items'] as $hour => $events) {
+        $weight += 0.001;
+        $element['#hours'] += [
+          $hour => [],
+        ];
+        $element['#hours'][$hour] += [
+          '#type' => 'schedule_hour',
+          '#items' => $events,
+          '#times' => $timetable->hourDuration($hour),
+          '#hour_id' => $hour,
+          '#weight' => $weight,
+        ];
+      }
     }
-    //dpm($element, 'element');
-    $date_storage = $element['#date'];
-    $date = DrupalDateTime::createFromFormat(DateTimeItemInterface::DATE_STORAGE_FORMAT, $date_storage);
 
     $element['#attributes']['data-schedule-day'] = $element['#date'];
-    // Normal attributes for a <marquee> tag do not include a 'random' option
-    // for scroll amount. Our marquee element type does though. So we use this
-    // #pre_render callback to check if the element was defined with the value
-    // 'random' for the scrollamount attribute, and if so replace the string
-    // with a random number.
-    if ($element['#attributes']['scrollamount'] == 'random') {
-      $element['#attributes']['scrollamount'] = abs(rand(1, 50));
-    }
+
     return $element;
   }
 

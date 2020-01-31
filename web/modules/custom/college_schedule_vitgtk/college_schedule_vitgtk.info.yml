@@ -1,0 +1,8 @@
+name: 'College schedule for VITGTK'
+type: module
+description: 'College schedule features for VITGTK'
+core: 8.x
+package: 'College schedule'
+dependencies:
+  - college_schedule:college_schedule
+  - drupal:image

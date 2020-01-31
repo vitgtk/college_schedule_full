@@ -1,0 +1,19 @@
+uuid: b0d489cc-7b64-4439-9b22-0002ae6ddb75
+langcode: ru
+status: true
+dependencies:
+  module:
+    - college_schedule
+id: discipline.locations
+field_name: locations
+entity_type: discipline
+type: entity_reference
+settings:
+  target_type: event_location
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

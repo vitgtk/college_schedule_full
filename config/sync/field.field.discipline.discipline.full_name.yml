@@ -1,0 +1,20 @@
+uuid: c800b8e8-2501-4657-9327-083f4a09f5f1
+langcode: ru
+status: true
+dependencies:
+  config:
+    - field.storage.discipline.full_name
+  module:
+    - college_schedule
+id: discipline.discipline.full_name
+field_name: full_name
+entity_type: discipline
+bundle: discipline
+label: 'Full name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

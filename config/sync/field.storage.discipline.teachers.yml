@@ -1,0 +1,19 @@
+uuid: 9e1118e7-afcb-41f5-a054-29a87428dd5c
+langcode: ru
+status: true
+dependencies:
+  module:
+    - college_schedule
+id: discipline.teachers
+field_name: teachers
+entity_type: discipline
+type: entity_reference
+settings:
+  target_type: teacher
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

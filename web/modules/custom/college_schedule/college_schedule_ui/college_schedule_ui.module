@@ -33,6 +33,27 @@ function college_schedule_ui_theme($existing, $type, $theme, $path) {
     'variables' => [
       'content' => '',
       'items' => NULL,
+      'hours' => NULL,
+      'attributes' => [],
+    ],
+  ];
+  $themes['schedule_hour_element'] = [
+    'variables' => [
+      'hour_id' => NULL,
+      'is_empty' => NULL,
+      'times' => NULL,
+      'actions' => NULL,
+      'events' => NULL,
+      'attributes' => [],
+    ],
+  ];
+  $themes['schedule_event_element'] = [
+    'variables' => [
+      'label' => NULL,
+      'event_id' => NULL,
+      'location' => NULL,
+      'subgroup' => NULL,
+      'type' => NULL,
       'attributes' => [],
     ],
   ];

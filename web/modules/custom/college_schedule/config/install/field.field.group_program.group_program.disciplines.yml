@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group_program.disciplines
+  module:
+    - college_schedule
+id: group_program.group_program.disciplines
+field_name: disciplines
+entity_type: group_program
+bundle: group_program
+label: Disciplines
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:discipline'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

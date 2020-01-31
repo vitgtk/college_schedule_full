@@ -1,0 +1,13 @@
+services:
+  logger.channel.college_schedule_ui:
+    parent: logger.channel_base
+    arguments: ['college_schedule_ui']
+  college_schedule_ui.schedule_day_param_converter:
+    class: Drupal\college_schedule_ui\ScheduleDayParamConverter
+    arguments: ['@database']
+    tags:
+      - { name: paramconverter }
+  college_schedule_ui.builder:
+    class: Drupal\college_schedule_ui\Builder
+    arguments: ['@college_schedule_api.data']
+

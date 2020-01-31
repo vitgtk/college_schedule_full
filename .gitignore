@@ -28,3 +28,6 @@
 .docker-sync/
 
 .db/
+
+# Drupal git modules
+/web/modules/git

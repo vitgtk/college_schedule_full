@@ -1,0 +1,20 @@
+uuid: 4d7f459a-2a9f-4d0f-b9bd-c92fd4c77102
+langcode: ru
+status: true
+dependencies:
+  module:
+    - college_schedule
+    - datetime
+id: schedule_event.date
+field_name: date
+entity_type: schedule_event
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

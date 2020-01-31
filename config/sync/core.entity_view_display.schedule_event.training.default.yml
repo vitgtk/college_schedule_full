@@ -1,0 +1,97 @@
+uuid: 6d2590fd-b6c7-43ca-bce2-1e61b2880f65
+langcode: ru
+status: true
+dependencies:
+  config:
+    - college_schedule.schedule_event_type.training
+    - field.field.schedule_event.training.date
+    - field.field.schedule_event.training.discipline
+    - field.field.schedule_event.training.location
+    - field.field.schedule_event.training.note
+    - field.field.schedule_event.training.subgroup
+    - field.field.schedule_event.training.teacher
+  module:
+    - datetime
+id: schedule_event.training.default
+targetEntityType: schedule_event
+bundle: training
+mode: default
+content:
+  date:
+    weight: 4
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  discipline:
+    weight: -1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  hour:
+    label: hidden
+    type: number_integer
+    weight: -2
+    region: content
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+  hour_id:
+    label: hidden
+    type: number_integer
+    weight: -2
+    region: content
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+  location:
+    weight: -3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  name:
+    label: hidden
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  note:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  subgroup:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  teacher:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
+  group_id: true
+  langcode: true

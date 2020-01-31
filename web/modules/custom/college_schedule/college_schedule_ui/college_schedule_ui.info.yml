@@ -5,3 +5,5 @@ core: 8.x
 package: 'College schedule'
 dependencies:
   - college_schedule:college_schedule
+  - college_schedule:college_schedule_api
+  - jquery_ui_sortable

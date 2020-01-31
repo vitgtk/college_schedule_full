@@ -1,0 +1,10 @@
+
+.schedule-form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+}
+
+.schedule-form-inline .form-item:not(:first-child) {
+  padding-left: 30px;
+}

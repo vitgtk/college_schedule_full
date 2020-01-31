@@ -1,0 +1,8 @@
+uuid: 355cd6df-bdd6-4619-bf49-15644b6fba4f
+langcode: ru
+status: true
+dependencies: {  }
+name: Department
+vid: department
+description: ''
+weight: 0

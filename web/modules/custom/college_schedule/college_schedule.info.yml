@@ -4,4 +4,5 @@ description: 'College schedule'
 core: 8.x
 package: 'College schedule'
 dependencies:
-  - views
+  - drupal:views
+  - drupal:image

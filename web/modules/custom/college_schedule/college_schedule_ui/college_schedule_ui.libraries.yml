@@ -7,23 +7,17 @@ dashboard:
       css/college-schedule-ui.css: {}
   dependencies:
     - core/drupalSettings
+    - core/jquery
+    - jquery_ui_sortable/sortable
+    - college_schedule_ui/form
 #    - college_schedule_ui/jquery-labelauty
 
-# Third-party library (self hosted).
-jquery-labelauty:
-  remote: https://github.com/fntneves/jquery-labelauty
-  version: 1.1.0
-  license:
-    name: MIT
-    url: https://github.com/fntneves/jquery-labelauty/blob/v1.1.0/LICENSE
-    gpl-compatible: true
-  js:
-    /libraries/jquery-labelauty/source/jquery-labelauty.js: {}
+form:
+  version: VERSION
   css:
     component:
-      /libraries/jquery-labelauty/source/jquery-labelauty.css: {}
-  dependencies:
-    - core/jquery
+      css/form.css: {}
+
 
 # Third-party library (CDN).
 vuejs:

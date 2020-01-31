@@ -1,0 +1,8 @@
+uuid: b2580db2-e22e-4e2a-a1a6-9516aa582867
+langcode: en
+status: true
+dependencies: {  }
+id: schedule
+label: 'College schedule menu'
+description: schedule
+locked: false

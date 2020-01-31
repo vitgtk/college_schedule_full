@@ -1,14 +1,130 @@
-.schedule-area-days {
-  display: flex;
-  flex-wrap: wrap;
-}
+
 .schedule-area-days--saturday-on {
 
 }
 
 .schedule-day-item {
   min-height: 50px;
-  width: 17%;
-  background: #cccccc;
+  width: 20%;
+  background: transparent;
   margin: 0 auto;
+
+}
+
+.schedule-area-days--saturday-on {}
+.schedule-area-days--saturday-on .schedule-day-item {
+  width: 15%;
+}
+
+
+
+.schedule-hour-item .handle {}
+
+.schedule-hour-item .events {
+  flex: 1 0 auto;
+}
+.schedule-hour-item .events-edit {
+  background: url("../img/edit_64px.png") center no-repeat;
+  background-size: 50%;
+  height: 24px;
+  width: 24px;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.handle {
+  cursor: pointer;
+  background: url("../img/handle_64px.png") center;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  height: 24px;
+  width: 24px;
+  padding: 3px;
+}
+
+.schedule-event-item {
+  display: flex;
+}
+
+.schedule-event-item .s-content {
+  flex: 1 0 auto;
+}
+
+.cs-board--dashboard {}
+
+.cs-board--controls {}
+
+.cs-board--schedule-area {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cs-board--days-area {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.cs-board--day-area {
+  min-height: 50px;
+  width: 20%;
+  background: transparent;
+  margin: 0 auto;
+}
+
+/* Add button styles */
+.cs-board--dashboard .button--add {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.cs-board--dashboard .button--add:hover {
+  color: #fff;
+  background-color: #218838;
+}
+
+.cs-board--dashboard .button--add:active {
+  background-color: #1e7e34;
+}
+
+.hour-type--empty-hour .handle {
+  display: none;
+}
+
+.cs-board--hour-item {
+  border: #0a6eb4 dotted 1px;
+  margin: 3px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.9);
+}
+.cs-board--hour-item--new {}
+.cs-board--hour-item--change {
+  border-color: #ffc107!important;
+}
+
+.cs-board--hour-header {
+  display: flex;
+  font-size: 10px;
+  justify-content: space-between;
+}
+.cs-board--hour-header div:not(:first-child) {
+  padding-left: 10px;
+}
+.hour-header-content {
+  flex: 0 1 auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cs-board--hour-events {
+  display: flex;
+  flex-direction: column;
+}
+.cs-board--hour-item--update {
+  border-color: #dc3545!important;
+}
+.cs-board--event-item {
+  padding: 0 5px;
+  display: flex;
 }

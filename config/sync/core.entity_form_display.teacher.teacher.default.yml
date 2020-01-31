@@ -1,0 +1,39 @@
+uuid: d6de9ba6-93cc-4de9-a7c4-edaec9a27c04
+langcode: ru
+status: true
+dependencies:
+  config:
+    - field.field.teacher.teacher.photo
+    - image.style.thumbnail
+  module:
+    - college_schedule
+    - image
+id: teacher.teacher.default
+targetEntityType: teacher
+bundle: teacher
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  photo:
+    weight: 3
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+hidden: {  }

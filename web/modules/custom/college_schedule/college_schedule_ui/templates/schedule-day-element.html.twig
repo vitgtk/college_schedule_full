@@ -15,15 +15,6 @@
 <div{{ attributes }}>
   <div class="day-header">{{ content }}</div>
   <div class="day-events">
-    {% for item in items %}
-      <div class="schedule-event-item"
-           data-event-number="{{ item.event_id }}"
-           data-day-id="{{ item.day_id }}">
-        {{ item.label }}
-      </div>
-    {% endfor %}
-  </div>
-  <div class="day-actions">
-    <button class="btn btn-success day-add-event">Add</button>
+    {{ hours }}
   </div>
 </div>

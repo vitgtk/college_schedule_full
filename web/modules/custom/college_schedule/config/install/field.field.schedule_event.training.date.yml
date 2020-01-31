@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - college_schedule.schedule_event_type.training
+    - field.storage.schedule_event.date
+  module:
+    - datetime
+id: schedule_event.training.date
+field_name: date
+entity_type: schedule_event
+bundle: training
+label: Date
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

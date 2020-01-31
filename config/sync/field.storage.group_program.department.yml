@@ -1,0 +1,20 @@
+uuid: b8433c39-5a8e-4e68-97bd-6fae52edeb79
+langcode: ru
+status: true
+dependencies:
+  module:
+    - college_schedule
+    - taxonomy
+id: group_program.department
+field_name: department
+entity_type: group_program
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

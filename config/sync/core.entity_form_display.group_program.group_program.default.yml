@@ -1,0 +1,46 @@
+uuid: e89a28ef-5303-4bb6-a9dd-f8f2fa34c4ae
+langcode: ru
+status: true
+dependencies:
+  config:
+    - field.field.group_program.group_program.department
+    - field.field.group_program.group_program.disciplines
+  module:
+    - college_schedule
+id: group_program.group_program.default
+targetEntityType: group_program
+bundle: group_program
+mode: default
+content:
+  department:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  disciplines:
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

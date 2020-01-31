@@ -1,0 +1,25 @@
+uuid: 0beba53d-1de3-4b75-bcec-c37fcde3f077
+langcode: ru
+status: true
+dependencies:
+  config:
+    - college_schedule.schedule_event_type.training
+    - field.storage.schedule_event.discipline
+id: schedule_event.training.discipline
+field_name: discipline
+entity_type: schedule_event
+bundle: training
+label: Discipline
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:discipline'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference
